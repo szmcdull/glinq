@@ -5,15 +5,20 @@ Currently implemented
 - Where
 - Select
 - Range
+- Foreach
 - Min(By)
 - Max(By)
 - Average
+- Sum
 - First
 - Last
 - Skip
 - Take
 
-More to come...
+Also some similar utilities for slices in the glinq/garray package.
+
+And more to come...
+
 
 # usage example
 

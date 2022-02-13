@@ -273,19 +273,3 @@ func TestAverageSum(t *testing.T) {
 		t.Errorf(`err=%v avg=%f expected 55`, err2, sum)
 	}
 }
-
-func TestAbs(t *testing.T) {
-	r := abs(-1)
-	r2 := abs(1)
-	if r != 1 || r2 != 1 {
-		t.Fail()
-	}
-}
-
-func TestClamp(t *testing.T) {
-	r := abs(-1)
-	r2 := abs(1)
-	if r != 1 || r2 != 1 {
-		t.Fail()
-	}
-}

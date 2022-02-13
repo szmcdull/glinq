@@ -3,6 +3,8 @@ package glinq
 import (
 	"constraints"
 	"io"
+
+	"github.com/szmcdull/glinq/galgorithm"
 )
 
 type (
@@ -121,26 +123,10 @@ func Sum[T Number](q IEnumerable[T]) (T, error) {
 	return result, err
 }
 
-func clamp[T constraints.Ordered](n, min, max T) T {
-	if n < min {
-		n = min
-	} else if n > max {
-		n = max
-	}
-	return n
-}
-
 func Clamp[T constraints.Ordered](q IEnumerable[T], min, max T) IEnumerable[T] {
-	return Select(q, func(t T) T { return clamp(t, min, max) })
-}
-
-func abs[T Number](n T) T {
-	if n < 0 {
-		n = -n
-	}
-	return n
+	return Select(q, func(t T) T { return galgorithm.Clamp(t, min, max) })
 }
 
 func Abs[T Number](q IEnumerable[T]) IEnumerable[T] {
-	return Select(q, func(t T) T { return abs(t) })
+	return Select(q, func(t T) T { return galgorithm.Abs(t) })
 }
