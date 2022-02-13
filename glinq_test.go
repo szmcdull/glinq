@@ -261,3 +261,31 @@ func TestCount(t *testing.T) {
 		t.Errorf(`count=%d expected 2`, q2.Count())
 	}
 }
+
+func TestAverageSum(t *testing.T) {
+	q := Range(1.0, 11.0)
+	avg, err := Average(q)
+	sum, err2 := Sum(q)
+	if err != nil || avg != 5.5 {
+		t.Errorf(`err=%v avg=%f expected 5.5`, err, avg)
+	}
+	if err2 != nil || sum != 55 {
+		t.Errorf(`err=%v avg=%f expected 55`, err2, sum)
+	}
+}
+
+func TestAbs(t *testing.T) {
+	r := abs(-1)
+	r2 := abs(1)
+	if r != 1 || r2 != 1 {
+		t.Fail()
+	}
+}
+
+func TestClamp(t *testing.T) {
+	r := abs(-1)
+	r2 := abs(1)
+	if r != 1 || r2 != 1 {
+		t.Fail()
+	}
+}

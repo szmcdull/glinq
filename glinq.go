@@ -1,7 +1,6 @@
 package glinq
 
 import (
-	"constraints"
 	"errors"
 	"io"
 )
@@ -93,98 +92,4 @@ func ForeachI[T any](q IEnumerable[T], f func(int, T) bool) error {
 		return nil
 	}
 	return err
-}
-
-func Min[T constraints.Ordered](q IEnumerable[T]) (T, error) {
-	iter := q.GetEnumerator()
-	err := iter.MoveNext()
-	result := iter.Current()
-	if err == nil {
-		for err = iter.MoveNext(); err == nil; err = iter.MoveNext() {
-			v := iter.Current()
-			if v < result {
-				result = v
-			}
-		}
-	}
-	if err == io.EOF {
-		err = nil
-	}
-	return result, err
-}
-
-func Max[T constraints.Ordered](q IEnumerable[T]) (T, error) {
-	iter := q.GetEnumerator()
-	err := iter.MoveNext()
-	result := iter.Current()
-	if err == nil {
-		for err = iter.MoveNext(); err == nil; err = iter.MoveNext() {
-			v := iter.Current()
-			if v > result {
-				result = v
-			}
-		}
-	}
-	if err == io.EOF {
-		err = nil
-	}
-	return result, err
-}
-
-func MinBy[T any, K constraints.Ordered](q IEnumerable[T], selector func(T) K) (result T, err error) {
-	iter := q.GetEnumerator()
-	err = iter.MoveNext()
-	if err == nil {
-		result = iter.Current()
-		k := selector(result)
-		for err = iter.MoveNext(); err == nil; err = iter.MoveNext() {
-			v := iter.Current()
-			k2 := selector(v)
-			if k2 < k {
-				result = v
-			}
-		}
-	}
-	if err == io.EOF {
-		err = nil
-	}
-	return result, err
-}
-
-func MaxBy[T any, K constraints.Ordered](q IEnumerable[T], selector func(T) K) (result T, err error) {
-	iter := q.GetEnumerator()
-	err = iter.MoveNext()
-	if err == nil {
-		result = iter.Current()
-		k := selector(result)
-		for err = iter.MoveNext(); err == nil; err = iter.MoveNext() {
-			v := iter.Current()
-			k2 := selector(v)
-			if k2 > k {
-				result = v
-			}
-		}
-	}
-	if err == io.EOF {
-		err = nil
-	}
-	return result, err
-}
-
-func Average[T constraints.Ordered](q IEnumerable[T]) (T, error) {
-	iter := q.GetEnumerator()
-	err := iter.MoveNext()
-	result := iter.Current()
-	if err == nil {
-		count := 1
-		for err = iter.MoveNext(); err == nil; err = iter.MoveNext() {
-			v := iter.Current()
-			result += v
-			count++
-		}
-	}
-	if err == io.EOF {
-		err = nil
-	}
-	return result, err
 }
