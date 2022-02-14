@@ -93,3 +93,17 @@ func ForeachI[T any](q IEnumerable[T], f func(int, T) bool) error {
 	}
 	return err
 }
+
+func Contains[T comparable](q IEnumerable[T], v T) (bool, error) {
+	iter := q.GetEnumerator()
+	err := iter.MoveNext()
+	for ; err == nil; err = iter.MoveNext() {
+		if iter.Current() == v {
+			return true, nil
+		}
+	}
+	if err == io.EOF {
+		err = nil
+	}
+	return false, err
+}

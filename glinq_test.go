@@ -273,3 +273,13 @@ func TestAverageSum(t *testing.T) {
 		t.Errorf(`err=%v avg=%f expected 55`, err2, sum)
 	}
 }
+
+func TestContains(t *testing.T) {
+	q := Range(1, 10)
+	if ok, err := Contains(q, -1); err != nil || ok {
+		t.Fail()
+	}
+	if ok, err := Contains(q, 1); err != nil || !ok {
+		t.Fail()
+	}
+}
