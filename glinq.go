@@ -64,6 +64,20 @@ func ToMap[T any, K comparable, V any](
 	return result, err
 }
 
+// Apply f() to all items in q
+func Do[T any](q IEnumerable[T], f func(T)) error {
+	iter := q.GetEnumerator()
+	err := iter.MoveNext()
+	for ; err == nil; err = iter.MoveNext() {
+		f(iter.Current())
+	}
+	if err == io.EOF {
+		return nil
+	}
+	return err
+}
+
+// Apply f() to all items in q, break when f() returns false
 func Foreach[T any](q IEnumerable[T], f func(T) bool) error {
 	iter := q.GetEnumerator()
 	err := iter.MoveNext()
@@ -78,6 +92,7 @@ func Foreach[T any](q IEnumerable[T], f func(T) bool) error {
 	return err
 }
 
+// Apply f() to all items in q, break when f() returns false. A counted index is passed to f()
 func ForeachI[T any](q IEnumerable[T], f func(int, T) bool) error {
 	iter := q.GetEnumerator()
 	err := iter.MoveNext()
