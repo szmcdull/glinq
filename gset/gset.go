@@ -2,6 +2,10 @@ package gset
 
 // Experimental. Use at your own risk
 
+type (
+	Set[T comparable] map[T]struct{}
+)
+
 func FromSlice[T comparable](l []T) map[T]struct{} {
 	result := make(map[T]struct{}, len(l))
 	for _, v := range l {
@@ -49,5 +53,31 @@ func Copy[T comparable](other map[T]struct{}) map[T]struct{} {
 	for k := range other {
 		result[k] = struct{}{}
 	}
+	return result
+}
+
+func NewFromSlice[T comparable](source []T) Set[T] {
+	return Set[T](FromSlice(source))
+}
+
+func (s Set[T]) ToSlice() []T {
+	return s.ToSlice()
+}
+
+func (s Set[T]) Add(other Set[T]) Set[T] {
+	result := Set[T](Copy(s))
+	Add(result, other)
+	return result
+}
+
+func (s Set[T]) Sub(other Set[T]) Set[T] {
+	result := Set[T](Copy(s))
+	Sub(result, other)
+	return result
+}
+
+func (s Set[T]) And(other Set[T]) Set[T] {
+	result := Set[T](Copy(s))
+	And(result, other)
 	return result
 }
