@@ -1,6 +1,9 @@
 package galgorithm
 
-import "constraints"
+import (
+	"constraints"
+	"errors"
+)
 
 type (
 	Number interface {
@@ -23,6 +26,10 @@ type (
 	}
 )
 
+var (
+	ErrNoValue = errors.New(`No values provided`)
+)
+
 // func (me IntFloat[T]) Add(other IntFloat[T]) IntFloat[T] {
 // 	return me.T + other.T
 // }
@@ -41,4 +48,34 @@ func Clamp[T constraints.Ordered](n, min, max T) T {
 		n = max
 	}
 	return n
+}
+
+func Min[T constraints.Ordered](values ...T) T {
+	l := len(values)
+	if l <= 0 {
+		panic(ErrNoValue)
+	}
+	result := values[0]
+	for i := 1; i < l; i++ {
+		x := values[i]
+		if x < result {
+			result = x
+		}
+	}
+	return result
+}
+
+func Max[T constraints.Ordered](values ...T) T {
+	l := len(values)
+	if l <= 0 {
+		panic(ErrNoValue)
+	}
+	result := values[0]
+	for i := 1; i < l; i++ {
+		x := values[i]
+		if x > result {
+			result = x
+		}
+	}
+	return result
 }

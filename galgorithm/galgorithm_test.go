@@ -18,3 +18,10 @@ func TestClamp(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestMinMax(t *testing.T) {
+	values := []int{1, 2, 3, 4, 5}
+	if Min(values...) != 1 || Max(values...) != 5 {
+		t.Fail()
+	}
+}
