@@ -64,19 +64,19 @@ func (s Set[T]) ToSlice() []T {
 	return s.ToSlice()
 }
 
-func (s Set[T]) Add(other Set[T]) Set[T] {
+func (s Set[T]) Add(other map[T]struct{}) Set[T] {
 	result := Set[T](Copy(s))
 	Add(result, other)
 	return result
 }
 
-func (s Set[T]) Sub(other Set[T]) Set[T] {
+func (s Set[T]) Sub(other map[T]struct{}) Set[T] {
 	result := Set[T](Copy(s))
 	Sub(result, other)
 	return result
 }
 
-func (s Set[T]) And(other Set[T]) Set[T] {
+func (s Set[T]) And(other map[T]struct{}) Set[T] {
 	result := Set[T](Copy(s))
 	And(result, other)
 	return result
