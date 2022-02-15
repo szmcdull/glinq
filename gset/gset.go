@@ -1,9 +1,13 @@
 package gset
 
+import (
+	"fmt"
+)
+
 // Experimental. Use at your own risk
 
 type (
-	Set[T comparable] map[T]struct{}
+	HashSet[T comparable] map[T]struct{}
 )
 
 func FromSlice[T comparable](l []T) map[T]struct{} {
@@ -56,28 +60,43 @@ func Copy[T comparable](other map[T]struct{}) map[T]struct{} {
 	return result
 }
 
-func NewFromSlice[T comparable](source []T) Set[T] {
-	return Set[T](FromSlice(source))
+func NewFromSlice[T comparable](source []T) HashSet[T] {
+	return HashSet[T](FromSlice(source))
 }
 
-func (s Set[T]) ToSlice() []T {
+func (s HashSet[T]) ToSlice() []T {
 	return s.ToSlice()
 }
 
-func (s Set[T]) Add(other map[T]struct{}) Set[T] {
-	result := Set[T](Copy(s))
+func (s HashSet[T]) Add(other map[T]struct{}) HashSet[T] {
+	result := HashSet[T](Copy(s))
 	Add(result, other)
 	return result
 }
 
-func (s Set[T]) Sub(other map[T]struct{}) Set[T] {
-	result := Set[T](Copy(s))
+func (s HashSet[T]) Sub(other map[T]struct{}) HashSet[T] {
+	result := HashSet[T](Copy(s))
 	Sub(result, other)
 	return result
 }
 
-func (s Set[T]) And(other map[T]struct{}) Set[T] {
-	result := Set[T](Copy(s))
+func (s HashSet[T]) And(other map[T]struct{}) HashSet[T] {
+	result := HashSet[T](Copy(s))
 	And(result, other)
 	return result
+}
+
+func (s HashSet[T]) String() string {
+	b := make([]byte, 0, len(s)*5)
+	b = append(b, []byte(`Set[`)...)
+	for k := range s {
+		b = append(b, []byte(fmt.Sprintf(`%#v `, k))...)
+	}
+	b[len(b)-1] = ']'
+	return string(b)
+}
+
+func (s HashSet[T]) Contains(v T) bool {
+	_, ok := s[v]
+	return ok
 }

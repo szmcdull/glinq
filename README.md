@@ -44,4 +44,4 @@ func main() {
 }
 ```
 
-**See [glinq_test.go](https://github.com/szmcdull/glinq/blob/main/glinq_test.go) for more examples**
+**See [glinq_test.go](https://github.com/szmcdull/glinq/blob/main/unsafe/glinq_test.go) for more examples**
