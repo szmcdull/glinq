@@ -1,9 +1,11 @@
 package glinq
 
-import "io"
+import (
+	"io"
+)
 
 func Last[T any](source IEnumerable[T], err *error) T {
-	return LastWhere(source, nil, err)
+	return LastWhere(source, func(T) bool { return true }, err)
 }
 
 func LastWhere[T any](source IEnumerable[T], pred func(T) bool, err *error) T {
@@ -17,12 +19,13 @@ func LastWhere[T any](source IEnumerable[T], pred func(T) bool, err *error) T {
 
 	var result T
 	found := false
-	e := Foreach(source, func(x T) bool {
+	e := Foreach(source, func(x T) error {
 		if pred(x) {
 			result = x
 			found = true
+			return io.EOF
 		}
-		return true
+		return nil
 	})
 	if e == nil {
 		if !found {

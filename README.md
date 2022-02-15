@@ -25,35 +25,22 @@ And more to come...
 ```go
 import (
 	"fmt"
-	"testing"
 
-    . "github.com/szmcdull/glinq"
+	. "github.com/szmcdull/glinq/unsafe"
 )
 
-func TestWhereSelect(t *testing.T) {
-	sl := FromSlice([]int{0, 1, 2, 3, 4, 5})
-	q := Where(sl, func(x int) bool { return x%2 == 0 })
-	q2 := Select(q, func(x int) string { return fmt.Sprintf(`%v`, x) })
-	sl2, err := ToSlice(q2)
-	if err != nil || len(sl2) != 3 {
-		t.Errorf(`err=%v len=%d expected 3`, err, len(sl2))
-		return
-	}
-	for i, v := range sl2 {
-		if fmt.Sprintf(`%d`, i*2) != v {
-			t.Errorf(`%d != %s`, i*2, v)
-		}
-	}
-}
-
-func TestForeach(t *testing.T) {
-	sl := FromSlice([]int{0, 1, 2, 3, 4, 5})
-	ForeachI(sl, func(i, x int) bool {
-		if i != x {
-			t.Errorf(`%d expected %d`, x, i)
-		}
-		return true
+func main() {
+	numbers := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	numbersToRemove := Where(FromSlice(numbers), func(x int) bool {
+		return x > 5
 	})
+	Do(numbersToRemove, func(x int) { fmt.Printf(`%d `, x) }) // 6 7 8 9 10
+	fmt.Println(``)
+	numbers = ToSlice(Where(FromSlice(numbers), func(x int) bool {
+		return !Contains(numbersToRemove, x)
+	}))
+	Do(FromSlice(numbers), func(x int) { fmt.Printf(`%d `, x) }) // 1 2 4 5 6
+	fmt.Println(``)
 }
 ```
 

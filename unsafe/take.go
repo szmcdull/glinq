@@ -1,8 +1,6 @@
-package glinq
+package unsafe
 
-import (
-	"io"
-)
+import "io"
 
 type (
 	TakeIterator[T any] struct {
@@ -32,9 +30,9 @@ func (me *TakeIterator[T]) Clone() IEnumerator[T] {
 	return result
 }
 
-func (me *TakeIterator[T]) MoveNext() error {
+func (me *TakeIterator[T]) MoveNext() bool {
 	if me.pos >= me.take {
-		return io.EOF
+		return false
 	}
 	me.pos++
 
@@ -45,11 +43,11 @@ func (me *TakeIterator[T]) MoveNext() error {
 		me.state = 2
 		fallthrough
 	case 2:
-		err := me.enumerator.MoveNext()
+		ok := me.enumerator.MoveNext()
 		me.current = me.enumerator.Current()
-		return err
+		return ok
 	}
-	return ErrInvalidState
+	panic(ErrInvalidState)
 }
 
 func (me *TakeIterator[T]) Any() bool {

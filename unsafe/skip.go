@@ -1,4 +1,4 @@
-package glinq
+package unsafe
 
 type (
 	SkipIterator[T any] struct {
@@ -28,7 +28,7 @@ func (me *SkipIterator[T]) Clone() IEnumerator[T] {
 	return result
 }
 
-func (me *SkipIterator[T]) MoveNext() error {
+func (me *SkipIterator[T]) MoveNext() bool {
 	switch me.state {
 	case 1:
 		enumerator := me.source.GetEnumerator()
@@ -37,26 +37,26 @@ func (me *SkipIterator[T]) MoveNext() error {
 			err := randomAcceesor.SeekOnce(me.skip)
 			me.current = enumerator.Current()
 			me.state = 2
-			return err
+			return err == nil
 		}
 		for i := 0; i < me.skip; i++ {
-			if err := enumerator.MoveNext(); err != nil {
-				return err
+			if ok := enumerator.MoveNext(); !ok {
+				return ok
 			}
 		}
 		me.current = enumerator.Current()
 		me.state = 2
 		fallthrough
 	case 2:
-		err := me.enumerator.MoveNext()
+		ok := me.enumerator.MoveNext()
 		me.current = me.enumerator.Current()
-		return err
+		return ok
 	}
-	return ErrInvalidState
+	panic(ErrInvalidState)
 }
 
 func (me *SkipIterator[T]) Any() bool {
-	return me.GetEnumerator().MoveNext() == nil
+	return me.GetEnumerator().MoveNext()
 }
 
 func (me *SkipIterator[T]) Count() int {
@@ -70,7 +70,9 @@ func (me *SkipIterator[T]) Count() int {
 	}
 
 	result := 0
-	Do(me.source, func(T) { result++ })
+	Do(me.source, func(T) {
+		result++
+	})
 	result -= me.skip
 	if result < 0 {
 		result = 0

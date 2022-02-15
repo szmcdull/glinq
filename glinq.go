@@ -78,11 +78,11 @@ func Do[T any](q IEnumerable[T], f func(T)) error {
 }
 
 // Apply f() to all items in q, break when f() returns false
-func Foreach[T any](q IEnumerable[T], f func(T) bool) error {
+func Foreach[T any](q IEnumerable[T], f func(T) error) error {
 	iter := q.GetEnumerator()
 	err := iter.MoveNext()
 	for ; err == nil; err = iter.MoveNext() {
-		if !f(iter.Current()) {
+		if err = f(iter.Current()); err != nil {
 			break
 		}
 	}
@@ -93,12 +93,12 @@ func Foreach[T any](q IEnumerable[T], f func(T) bool) error {
 }
 
 // Apply f() to all items in q, break when f() returns false. A counted index is passed to f()
-func ForeachI[T any](q IEnumerable[T], f func(int, T) bool) error {
+func ForeachI[T any](q IEnumerable[T], f func(int, T) error) error {
 	iter := q.GetEnumerator()
 	err := iter.MoveNext()
 	i := 0
 	for ; err == nil; err = iter.MoveNext() {
-		if !f(i, iter.Current()) {
+		if err = f(i, iter.Current()); err != nil {
 			break
 		}
 		i++
