@@ -24,3 +24,23 @@ func TestSort(t *testing.T) {
 		}
 	}
 }
+
+func TestOrderBy(t *testing.T) {
+	l := []string{`the`, `lazy`, `dog`, `jumps`, `over`, `the`, `silver`, `fox`}
+
+	r := []string{`dog`, `fox`, `jumps`, `lazy`, `over`, `silver`, `the`, `the`}
+	sort.Sort(OrderBy(l, func(x string) byte { return x[0] }))
+	for i := range l {
+		if l[i] != r[i] {
+			t.Errorf(`#%d = %s expected %s`, i, l[i], r[i])
+		}
+	}
+
+	r2 := []string{`the`, `the`, `silver`, `over`, `lazy`, `jumps`, `fox`, `dog`}
+	sort.Sort(OrderByDescending(l, func(x string) byte { return x[0] }))
+	for i := range l {
+		if l[i] != r2[i] {
+			t.Errorf(`#%d = %s expected %s`, i, l[i], r2[i])
+		}
+	}
+}

@@ -50,8 +50,9 @@ func main() {
 	sort.Sort(garray.Sortable(l))
 	fmt.Printf("%v\n", l) // [1 2 3 4 5 6 8]
 
-	sort.Sort(garray.SortableDescending(l))
-	fmt.Printf("%v\n", l) // [8 6 5 4 3 2 1]
+	l2 := []string{`the`, `lazy`, `dog`, `jumps`, `over`, `the`, `silver`, `fox`}
+	sort.Sort(garray.OrderByDescending(l2, func(x string) byte { return x[len(x)-1] })) // sort descending by the last character
+	fmt.Printf("%v\n", l2)                                                              // [lazy fox jumps silver over dog the the]
 }
 ```
 
