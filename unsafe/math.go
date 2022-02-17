@@ -17,13 +17,13 @@ var (
 	ErrEmptyEnumerable = errors.New(`IEnumerable is empty`)
 )
 
-func Min[T constraints.Ordered](q IEnumerable[T]) T {
+func Min[T constraints.Ordered](q IEnumerable[T]) (result T) {
 	iter := q.GetEnumerator()
 	ok := iter.MoveNext()
 	if !ok {
-		panic(ErrEmptyEnumerable)
+		return
 	}
-	result := iter.Current()
+	result = iter.Current()
 	if ok {
 		for ok = iter.MoveNext(); ok; ok = iter.MoveNext() {
 			v := iter.Current()
@@ -35,13 +35,13 @@ func Min[T constraints.Ordered](q IEnumerable[T]) T {
 	return result
 }
 
-func Max[T constraints.Ordered](q IEnumerable[T]) T {
+func Max[T constraints.Ordered](q IEnumerable[T]) (result T) {
 	iter := q.GetEnumerator()
 	ok := iter.MoveNext()
 	if !ok {
-		panic(ErrEmptyEnumerable)
+		return
 	}
-	result := iter.Current()
+	result = iter.Current()
 	if ok {
 		for ok = iter.MoveNext(); ok; ok = iter.MoveNext() {
 			v := iter.Current()
@@ -58,7 +58,7 @@ func MinBy[T any, K constraints.Ordered](q IEnumerable[T], selector func(T) K) (
 	iter := q.GetEnumerator()
 	ok := iter.MoveNext()
 	if !ok {
-		panic(ErrEmptyEnumerable)
+		return
 	}
 	if ok {
 		result = iter.Current()
@@ -78,7 +78,7 @@ func MaxBy[T any, K constraints.Ordered](q IEnumerable[T], selector func(T) K) (
 	iter := q.GetEnumerator()
 	ok := iter.MoveNext()
 	if !ok {
-		panic(ErrEmptyEnumerable)
+		return
 	}
 	if ok {
 		result = iter.Current()
@@ -94,13 +94,13 @@ func MaxBy[T any, K constraints.Ordered](q IEnumerable[T], selector func(T) K) (
 	return result
 }
 
-func Average[T Number](q IEnumerable[T]) T {
+func Average[T Number](q IEnumerable[T]) (result T) {
 	iter := q.GetEnumerator()
 	ok := iter.MoveNext()
 	if !ok {
-		panic(ErrEmptyEnumerable)
+		return
 	}
-	result := iter.Current()
+	result = iter.Current()
 	count := 1
 	if ok {
 		for ok = iter.MoveNext(); ok; ok = iter.MoveNext() {
@@ -112,13 +112,13 @@ func Average[T Number](q IEnumerable[T]) T {
 	return result / T(count)
 }
 
-func Sum[T Number](q IEnumerable[T]) T {
+func Sum[T Number](q IEnumerable[T]) (result T) {
 	iter := q.GetEnumerator()
 	ok := iter.MoveNext()
 	if !ok {
-		panic(ErrEmptyEnumerable)
+		return
 	}
-	result := iter.Current()
+	result = iter.Current()
 	if ok {
 		for ok = iter.MoveNext(); ok; ok = iter.MoveNext() {
 			v := iter.Current()
