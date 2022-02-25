@@ -1,8 +1,9 @@
 package galgorithm
 
 import (
-	"constraints"
 	"errors"
+
+	"golang.org/x/exp/constraints"
 )
 
 type (

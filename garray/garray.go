@@ -1,6 +1,6 @@
 package garray
 
-import "constraints"
+import "golang.org/x/exp/constraints"
 
 /*
  * Some utilities for slices

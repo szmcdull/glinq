@@ -1,10 +1,10 @@
 package unsafe
 
 import (
-	"constraints"
 	"errors"
 
 	"github.com/szmcdull/glinq/galgorithm"
+	"golang.org/x/exp/constraints"
 )
 
 type (

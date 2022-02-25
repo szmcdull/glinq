@@ -1,6 +1,6 @@
 package garray
 
-import "constraints"
+import "golang.org/x/exp/constraints"
 
 // sortable a generics slice which implements sort.Interface
 // inspired by https://github.com/amtoaer/generic-sort

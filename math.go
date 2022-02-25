@@ -1,10 +1,10 @@
 package glinq
 
 import (
-	"constraints"
 	"io"
 
 	"github.com/szmcdull/glinq/galgorithm"
+	"golang.org/x/exp/constraints"
 )
 
 type (

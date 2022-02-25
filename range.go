@@ -1,10 +1,11 @@
 package glinq
 
 import (
-	"constraints"
 	"io"
 	"math"
 	"sync/atomic"
+
+	"golang.org/x/exp/constraints"
 )
 
 type (
