@@ -55,7 +55,7 @@ func (me *WhereEnumerableIterator[T]) Clone() IEnumerator[T] {
 }
 
 func (me *WhereEnumerableIterator[T]) Any() bool {
-	return me.MoveNext()
+	return me.Clone().MoveNext()
 }
 
 func (me *WhereEnumerableIterator[T]) Count() int {

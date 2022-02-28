@@ -25,6 +25,9 @@ func TestWhere(t *testing.T) {
 	sl := FromSlice([]int{1, 2, 3, 4, 5, 6})
 	q := Where(sl, func(x int) bool { return x%2 == 0 }) // 2 4 6
 	q = Where(q, func(x int) bool { return x > 2 })      // 4 6
+	if !Any(q) {
+		t.Fail()
+	}
 	sl2 := ToSlice(q)
 	if len(sl2) != 2 || sl2[0] != 4 || sl2[1] != 6 {
 		t.Errorf(`len=%d exected 2, [0]=%d expected 4, [1]=%d expected 6`, len(sl2), sl2[0], sl2[1])
@@ -115,7 +118,7 @@ func TestRangeFloat(t *testing.T) {
 	q := Range(0.0, 10.0)
 	sl := ToSlice(q)
 	if q.Count() != 10 || len(sl) != 10 {
-		t.Errorf(`err=%v count=%d len=%d expected 10`, q.Count(), len(sl))
+		t.Errorf(`count=%d len=%d expected 10`, q.Count(), len(sl))
 		return
 	}
 	if sl[0] != 0 || sl[9] != 9 {
@@ -125,7 +128,7 @@ func TestRangeFloat(t *testing.T) {
 	q = RangeStep(0.0, 10.0, 2.0)
 	sl = ToSlice(q)
 	if q.Count() != 5 || len(sl) != 5 {
-		t.Errorf(`err=%v count=%d len=%d expected 5`, q.Count(), len(sl))
+		t.Errorf(`count=%d len=%d expected 5`, q.Count(), len(sl))
 		return
 	}
 	if sl[0] != 0 || sl[4] != 8 {

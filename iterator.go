@@ -23,6 +23,10 @@ type (
 	}
 )
 
+func Any[T any](q IEnumerable[T]) bool {
+	return q.Any()
+}
+
 func (me *iterator[T]) GetEnumerator() IEnumerator[T] {
 	var result IEnumerator[T]
 	if atomic.CompareAndSwapInt32(&me.state, 0, 1) {

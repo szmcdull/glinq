@@ -25,6 +25,9 @@ func TestWhere(t *testing.T) {
 	sl := FromSlice([]int{1, 2, 3, 4, 5, 6})
 	q := Where(sl, func(x int) bool { return x%2 == 0 }) // 2 4 6
 	q = Where(q, func(x int) bool { return x > 2 })      // 4 6
+	if !Any(q) {
+		t.Fail()
+	}
 	sl2, err := ToSlice(q)
 	if err != nil || len(sl2) != 2 || sl2[0] != 4 || sl2[1] != 6 {
 		t.Errorf(`err=%v, len=%d exected 2, [0]=%d expected 4, [1]=%d expected 6`, err, len(sl2), sl2[0], sl2[1])
