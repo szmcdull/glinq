@@ -10,7 +10,7 @@ type (
 	HashSet[T comparable] map[T]struct{}
 )
 
-func FromSlice[T comparable](l []T) map[T]struct{} {
+func FromSlice[S ~[]T, T comparable](l S) map[T]struct{} {
 	result := make(map[T]struct{}, len(l))
 	for _, v := range l {
 		result[v] = struct{}{}
@@ -18,7 +18,7 @@ func FromSlice[T comparable](l []T) map[T]struct{} {
 	return result
 }
 
-func ToSlice[T comparable](m map[T]struct{}) []T {
+func ToSlice[M ~map[T]struct{}, T comparable](m M) []T {
 	result := make([]T, 0, len(m))
 	for k := range m {
 		result = append(result, k)
@@ -27,14 +27,14 @@ func ToSlice[T comparable](m map[T]struct{}) []T {
 }
 
 // Add all in B to A
-func Add[T comparable](A, B map[T]struct{}) {
+func Add[M ~map[T]struct{}, T comparable](A, B M) {
 	for k := range B {
 		A[k] = struct{}{}
 	}
 }
 
 // Remove all in B from A
-func Sub[T comparable](A, B map[T]struct{}) {
+func Sub[M ~map[T]struct{}, T comparable](A, B M) {
 	for k := range A {
 		if _, ok := B[k]; ok {
 			delete(A, k)
@@ -43,7 +43,7 @@ func Sub[T comparable](A, B map[T]struct{}) {
 }
 
 // Remove anything not in B from A
-func And[T comparable](A, B map[T]struct{}) {
+func And[M ~map[T]struct{}, T comparable](A, B M) {
 	for k := range A {
 		if _, ok := B[k]; !ok {
 			delete(A, k)
@@ -52,7 +52,7 @@ func And[T comparable](A, B map[T]struct{}) {
 }
 
 // Shallow copy
-func Copy[T comparable](other map[T]struct{}) map[T]struct{} {
+func Copy[M ~map[T]struct{}, T comparable](other M) M {
 	result := make(map[T]struct{}, len(other))
 	for k := range other {
 		result[k] = struct{}{}
@@ -60,8 +60,8 @@ func Copy[T comparable](other map[T]struct{}) map[T]struct{} {
 	return result
 }
 
-func NewFromSlice[T comparable](source []T) HashSet[T] {
-	return HashSet[T](FromSlice(source))
+func NewFromSlice[S ~[]T, T comparable](source S) HashSet[T] {
+	return HashSet[T](FromSlice[S, T](source))
 }
 
 func (s HashSet[T]) ToSlice() []T {

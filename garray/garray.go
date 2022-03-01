@@ -1,6 +1,8 @@
 package garray
 
-import "golang.org/x/exp/constraints"
+import (
+	"golang.org/x/exp/constraints"
+)
 
 /*
  * Some utilities for slices
@@ -13,18 +15,18 @@ type (
 )
 
 // Apply a function to each item of a slice
-func Apply[T any](l []T, fun func(T)) {
+func Apply[S ~[]T, T any](l S, fun func(T)) {
 	for i := range l {
 		fun(l[i])
 	}
 }
 
-func Average[T Number](l []T) T {
-	result := Sum(l) / T(len(l))
+func Average[S ~[]T, T Number](l S) T {
+	result := Sum[S, T](l) / T(len(l))
 	return result
 }
 
-func Sum[T Number](l []T) T {
+func Sum[S ~[]T, T Number](l S) T {
 	var sum T
 	for _, x := range l {
 		sum += x
@@ -32,7 +34,7 @@ func Sum[T Number](l []T) T {
 	return sum
 }
 
-func First[T any](l []T, pref func(T) bool) (T, bool) {
+func First[S ~[]T, T any](l S, pref func(T) bool) (T, bool) {
 	for _, x := range l {
 		if pref(x) {
 			return x, true
@@ -42,7 +44,7 @@ func First[T any](l []T, pref func(T) bool) (T, bool) {
 	return r, false
 }
 
-func Last[T any](l []T, pref func(T) bool) (T, bool) {
+func Last[S ~[]T, T any](l S, pref func(T) bool) (T, bool) {
 	for i := len(l) - 1; i >= 0; i-- {
 		x := l[i]
 		if pref(x) {
@@ -53,7 +55,7 @@ func Last[T any](l []T, pref func(T) bool) (T, bool) {
 	return r, false
 }
 
-func IndexOf[T comparable](l []T, v T) int {
+func IndexOf[S ~[]T, T comparable](l S, v T) int {
 	for i, x := range l {
 		if x == v {
 			return i
@@ -62,7 +64,7 @@ func IndexOf[T comparable](l []T, v T) int {
 	return -1
 }
 
-func IndexWhere[T any](l []T, pref func(T) bool) int {
+func IndexWhere[S ~[]T, T any](l S, pref func(T) bool) int {
 	for i, x := range l {
 		if pref(x) {
 			return i
@@ -71,7 +73,7 @@ func IndexWhere[T any](l []T, pref func(T) bool) int {
 	return -1
 }
 
-func LastIndexOf[T comparable](l []T, v T) int {
+func LastIndexOf[S ~[]T, T comparable](l S, v T) int {
 	for i := len(l) - 1; i >= 0; i-- {
 		x := l[i]
 		if x == v {
@@ -81,7 +83,7 @@ func LastIndexOf[T comparable](l []T, v T) int {
 	return -1
 }
 
-func LastIndexWhere[T any](l []T, pref func(T) bool) int {
+func LastIndexWhere[S ~[]T, T any](l S, pref func(T) bool) int {
 	for i := len(l) - 1; i >= 0; i-- {
 		x := l[i]
 		if pref(x) {
@@ -89,4 +91,22 @@ func LastIndexWhere[T any](l []T, pref func(T) bool) int {
 		}
 	}
 	return -1
+}
+
+// copy the contents of all slices_, returns a new slice
+func Concat[S ~[]T, T any](slices_ ...S) S {
+	c := 0
+	for i := range slices_ {
+		c += len(slices_[i])
+	}
+	if len(slices_) == 0 || c == 0 {
+		return nil
+	}
+
+	result := make([]T, c)
+	p := 0
+	for _, s := range slices_ {
+		p += copy(result[p:], s)
+	}
+	return result
 }
