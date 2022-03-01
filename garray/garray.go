@@ -73,6 +73,16 @@ func IndexWhere[S ~[]T, T any](l S, pref func(T) bool) int {
 	return -1
 }
 
+// use P version when T is a large struct, to improve performance
+func IndexWhereP[S ~[]T, T any](l S, pref func(*T) bool) int {
+	for i := range l {
+		if pref(&l[i]) {
+			return i
+		}
+	}
+	return -1
+}
+
 func LastIndexOf[S ~[]T, T comparable](l S, v T) int {
 	for i := len(l) - 1; i >= 0; i-- {
 		x := l[i]
@@ -86,6 +96,17 @@ func LastIndexOf[S ~[]T, T comparable](l S, v T) int {
 func LastIndexWhere[S ~[]T, T any](l S, pref func(T) bool) int {
 	for i := len(l) - 1; i >= 0; i-- {
 		x := l[i]
+		if pref(x) {
+			return i
+		}
+	}
+	return -1
+}
+
+// use P version when T is a large struct, to improve performance
+func LastIndexWhereP[S ~[]T, T any](l S, pref func(*T) bool) int {
+	for i := len(l) - 1; i >= 0; i-- {
+		x := &l[i]
 		if pref(x) {
 			return i
 		}
