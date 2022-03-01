@@ -1,30 +1,5 @@
-# glinq
-Go port of DotNet LINQ using generics introduced in Go 1.18
+package main
 
-Currently implemented
-- Where
-- Select
-- Range
-- Foreach
-- Min(By)
-- Max(By)
-- Average
-- Sum
-- First
-- Last
-- Skip
-- Take
-- Contains
-- Any
-
-Also some similar utilities for slices in the glinq/garray package.
-
-And more to come...
-
-
-# usage example
-
-```go
 import (
 	"fmt"
 	"sort"
@@ -57,6 +32,3 @@ func main() {
 	sort.Sort(garray.OrderByDescending(l2, func(x string) byte { return x[len(x)-1] })) // sort descending by the last character
 	fmt.Printf("%v\n", l2)                                                              // [lazy fox jumps silver over dog the the]
 }
-```
-
-**See [glinq_test.go](https://github.com/szmcdull/glinq/blob/main/unsafe/glinq_test.go) for more examples**
