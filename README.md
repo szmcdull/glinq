@@ -16,6 +16,7 @@ Currently implemented
 - Take
 - Contains
 - Any
+- Join
 
 Also some similar utilities for slices in the glinq/garray package.
 

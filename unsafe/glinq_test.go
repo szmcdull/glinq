@@ -286,3 +286,35 @@ func TestContains(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestJoin(t *testing.T) {
+	type country struct {
+		id   int
+		name string
+	}
+	type city struct {
+		id        int
+		name      string
+		countryId int
+	}
+	type all struct {
+		country
+		city
+	}
+
+	outer := []country{{1, `USA`}, {2, `GB`}, {3, `China`}, {4, `Japan`}}
+	inner := []city{{1, `Shenzhen`, 3}, {2, `London`, 2}, {3, `New York`, 1}, {4, `Guangzhou`, 3}, {5, `Bangkok`, 0}}
+	result := ToSlice(
+		Join(FromSlice(outer),
+			FromSlice(inner),
+			func(o country, i city) (ok bool, result all) {
+				if o.id == i.countryId {
+					return true, all{o, i}
+				}
+				return false, all{}
+			}))
+	s := fmt.Sprintf(`%+v`, result)
+	if s != `[{country:{id:1 name:USA} city:{id:3 name:New York countryId:1}} {country:{id:2 name:GB} city:{id:2 name:London countryId:2}} {country:{id:3 name:China} city:{id:1 name:Shenzhen countryId:3}} {country:{id:3 name:China} city:{id:4 name:Guangzhou countryId:3}}]` {
+		t.Fail()
+	}
+}
