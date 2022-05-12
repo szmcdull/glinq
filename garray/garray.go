@@ -14,6 +14,14 @@ type (
 	}
 )
 
+func Map[Src any, Dst any](l []Src, f func(Src) Dst) []Dst {
+	result := make([]Dst, len(l))
+	for i, src := range l {
+		result[i] = f(src)
+	}
+	return result
+}
+
 // Apply a function to each item of a slice
 func Apply[S ~[]T, T any](l S, fun func(T)) {
 	for i := range l {
@@ -129,5 +137,11 @@ func Concat[S ~[]T, T any](slices_ ...S) S {
 	for _, s := range slices_ {
 		p += copy(result[p:], s)
 	}
+	return result
+}
+
+func ShallowCopy[T any](s slice[T]) slice[T] {
+	result := make(slice[T], len(s))
+	copy(result, s)
 	return result
 }
