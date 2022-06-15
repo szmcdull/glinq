@@ -72,4 +72,4 @@ func main() {
 }
 ```
 
-**See [glinq_test.go](https://github.com/szmcdull/glinq/blob/main/unsafe/glinq_test.go) for more examples**
+**See [glinq_test.go](https://github.com/szmcdull/glinq/blob/main/unsafe/glinq_test.go), [garray_test.go](https://github.com/szmcdull/glinq/blob/main/garray/garray_test.go), and other tests for more examples**

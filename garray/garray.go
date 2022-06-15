@@ -42,9 +42,9 @@ func Sum[S ~[]T, T Number](l S) T {
 	return sum
 }
 
-func First[S ~[]T, T any](l S, pref func(T) bool) (T, bool) {
+func First[S ~[]T, T any](l S, pred func(T) bool) (T, bool) {
 	for _, x := range l {
-		if pref(x) {
+		if pred(x) {
 			return x, true
 		}
 	}
@@ -52,10 +52,10 @@ func First[S ~[]T, T any](l S, pref func(T) bool) (T, bool) {
 	return r, false
 }
 
-func Last[S ~[]T, T any](l S, pref func(T) bool) (T, bool) {
+func Last[S ~[]T, T any](l S, pred func(T) bool) (T, bool) {
 	for i := len(l) - 1; i >= 0; i-- {
 		x := l[i]
-		if pref(x) {
+		if pred(x) {
 			return x, true
 		}
 	}
@@ -72,9 +72,9 @@ func IndexOf[S ~[]T, T comparable](l S, v T) int {
 	return -1
 }
 
-func IndexWhere[S ~[]T, T any](l S, pref func(T) bool) int {
+func IndexWhere[S ~[]T, T any](l S, pred func(T) bool) int {
 	for i, x := range l {
-		if pref(x) {
+		if pred(x) {
 			return i
 		}
 	}
@@ -82,9 +82,9 @@ func IndexWhere[S ~[]T, T any](l S, pref func(T) bool) int {
 }
 
 // use P version when T is a large struct, to improve performance
-func IndexWhereP[S ~[]T, T any](l S, pref func(*T) bool) int {
+func IndexWhereP[S ~[]T, T any](l S, pred func(*T) bool) int {
 	for i := range l {
-		if pref(&l[i]) {
+		if pred(&l[i]) {
 			return i
 		}
 	}
@@ -101,10 +101,10 @@ func LastIndexOf[S ~[]T, T comparable](l S, v T) int {
 	return -1
 }
 
-func LastIndexWhere[S ~[]T, T any](l S, pref func(T) bool) int {
+func LastIndexWhere[S ~[]T, T any](l S, pred func(T) bool) int {
 	for i := len(l) - 1; i >= 0; i-- {
 		x := l[i]
-		if pref(x) {
+		if pred(x) {
 			return i
 		}
 	}
@@ -112,10 +112,10 @@ func LastIndexWhere[S ~[]T, T any](l S, pref func(T) bool) int {
 }
 
 // use P version when T is a large struct, to improve performance
-func LastIndexWhereP[S ~[]T, T any](l S, pref func(*T) bool) int {
+func LastIndexWhereP[S ~[]T, T any](l S, pred func(*T) bool) int {
 	for i := len(l) - 1; i >= 0; i-- {
 		x := &l[i]
-		if pref(x) {
+		if pred(x) {
 			return i
 		}
 	}
