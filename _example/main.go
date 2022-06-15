@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"sort"
 
 	"github.com/szmcdull/glinq/garray"
 	. "github.com/szmcdull/glinq/unsafe"
@@ -25,10 +24,10 @@ func main() {
 	// Sorting
 	l := []int{8, 6, 4, 2, 5, 3, 1}
 
-	sort.Sort(garray.Sortable(l))
+	garray.Sort(l)
 	fmt.Printf("%v\n", l) // [1 2 3 4 5 6 8]
 
 	l2 := []string{`the`, `lazy`, `dog`, `jumps`, `over`, `the`, `silver`, `fox`}
-	sort.Sort(garray.OrderByDescending(l2, func(x string) byte { return x[len(x)-1] })) // sort descending by the last character
-	fmt.Printf("%v\n", l2)                                                              // [lazy fox jumps silver over dog the the]
+	garray.SortByDescending(l2, func(x string) byte { return x[len(x)-1] }) // sort descending by the last character
+	fmt.Printf("%v\n", l2)                                                  // [lazy fox jumps silver over dog the the]
 }

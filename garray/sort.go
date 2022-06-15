@@ -1,6 +1,10 @@
 package garray
 
-import "golang.org/x/exp/constraints"
+import (
+	"sort"
+
+	"golang.org/x/exp/constraints"
+)
 
 // sortable a generics slice which implements sort.Interface
 // inspired by https://github.com/amtoaer/generic-sort
@@ -29,12 +33,28 @@ func SortableDescending[T constraints.Ordered](l []T) sortableDescending[T] {
 	return sortableDescending[T]{sortable[T]{l}}
 }
 
+func Sort[T constraints.Ordered](l []T) {
+	sort.Sort(Sortable(l))
+}
+
+func SortDescending[T constraints.Ordered](l []T) {
+	sort.Sort(SortableDescending(l))
+}
+
 func OrderBy[T any, V constraints.Ordered](l []T, selector func(T) V) *sortableBy[T, V] {
 	return &sortableBy[T, V]{slice[T](l), selector}
 }
 
 func OrderByDescending[T any, V constraints.Ordered](l []T, selector func(T) V) *sortableByDescending[T, V] {
 	return &sortableByDescending[T, V]{sortableBy[T, V]{slice[T](l), selector}}
+}
+
+func SortBy[T any, V constraints.Ordered](l []T, selector func(T) V) {
+	sort.Sort(OrderBy(l, selector))
+}
+
+func SortByDescending[T any, V constraints.Ordered](l []T, selector func(T) V) {
+	sort.Sort(OrderByDescending(l, selector))
 }
 
 func (s slice[T]) Len() int {
