@@ -1,6 +1,8 @@
 package garray
 
 import (
+	"time"
+
 	"golang.org/x/exp/constraints"
 )
 
@@ -10,7 +12,7 @@ import (
 
 type (
 	Number interface {
-		constraints.Integer | constraints.Float
+		constraints.Integer | constraints.Float | time.Duration
 	}
 )
 
