@@ -31,6 +31,8 @@ Also some similar utilities directly for slices in the glinq/garray package. The
 - Sum
 - Average
 
+Also a generic SyncMap type (should I separate it in another repository?)
+
 And more to come...
 
 
