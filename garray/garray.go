@@ -25,10 +25,13 @@ func Map[Src any, Dst any](l []Src, f func(Src) Dst) []Dst {
 }
 
 // Apply a function to each item of a slice
-func Apply[S ~[]T, T any](l S, fun func(T)) {
+func Apply[S ~[]T, T any](l S, fun func(T) error) error {
 	for i := range l {
-		fun(l[i])
+		if err := fun(l[i]); err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 func Average[S ~[]T, T Number](l S) T {
