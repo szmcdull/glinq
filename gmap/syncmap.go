@@ -45,6 +45,27 @@ func (me *SyncMap[K, V]) Load(key K) (value V, ok bool) {
 	return
 }
 
+func (me *SyncMap[K, V]) LoadAndDelete(key K) (value V, loaded bool) {
+	me.l.RLock()
+	defer me.l.RUnlock()
+	value, loaded = me.m[key]
+	if loaded {
+		delete(me.m, key)
+	}
+	return
+}
+
+func (me *SyncMap[K, V]) LoadAndStore(key K, value V) (actual V, loaded bool) {
+	me.l.RLock()
+	defer me.l.RUnlock()
+	actual, loaded = me.m[key]
+	me.m[key] = value
+	if !loaded {
+		actual = value
+	}
+	return
+}
+
 func (me *SyncMap[K, V]) Range(f func(K, V) bool) {
 	me.l.RLock()
 	defer me.l.RUnlock()

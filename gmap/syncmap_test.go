@@ -53,6 +53,35 @@ func Test(t *testing.T) {
 	}
 }
 
+func TestLoadAnd(t *testing.T) {
+	m := NewSyncMap[int, int]()
+	m.Store(1, 2)
+	if v, ok := m.Load(1); v != 2 || !ok {
+		t.Fail()
+	}
+
+	if v, ok := m.LoadAndStore(2, 4); v != 4 || ok {
+		t.Fail()
+	}
+	if v, ok := m.Load(2); v != 4 || !ok {
+		t.Fail()
+	}
+
+	if v, ok := m.LoadAndStore(2, 0); v != 4 || !ok {
+		t.Fail()
+	}
+	if v, ok := m.Load(2); v != 0 || !ok {
+		t.Fail()
+	}
+
+	if v, ok := m.LoadAndDelete(1); v != 2 || !ok {
+		t.Fail()
+	}
+	if v, ok := m.LoadAndDelete(3); v != 0 || ok {
+		t.Fail()
+	}
+}
+
 func _Write(ch <-chan struct{}, m *SyncMap[int, int]) {
 	count := 0
 	for {
