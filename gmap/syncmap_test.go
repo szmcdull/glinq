@@ -60,17 +60,17 @@ func TestLoadAnd(t *testing.T) {
 		t.Fail()
 	}
 
-	if v, ok := m.LoadAndStore(2, 4); v != 4 || ok {
+	if v, ok := m.LoadOrStore(2, 4); v != 4 || ok {
 		t.Fail()
 	}
 	if v, ok := m.Load(2); v != 4 || !ok {
 		t.Fail()
 	}
 
-	if v, ok := m.LoadAndStore(2, 0); v != 4 || !ok {
+	if v, ok := m.LoadOrStore(2, 0); v != 4 || !ok {
 		t.Fail()
 	}
-	if v, ok := m.Load(2); v != 0 || !ok {
+	if v, ok := m.Load(2); v != 4 || !ok {
 		t.Fail()
 	}
 
@@ -78,6 +78,10 @@ func TestLoadAnd(t *testing.T) {
 		t.Fail()
 	}
 	if v, ok := m.LoadAndDelete(3); v != 0 || ok {
+		t.Fail()
+	}
+
+	if v, ok := m.LoadOrNew(1, func() int { return 3 }); v != 3 || ok {
 		t.Fail()
 	}
 }

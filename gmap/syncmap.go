@@ -38,6 +38,8 @@ func (me *SyncMap[K, V]) Store(key K, value V) {
 	me.m[key] = value
 }
 
+// LoadAndDelete deletes the value for a key, returning the previous value if any.
+// The loaded result reports whether the key was present.
 func (me *SyncMap[K, V]) LoadAndDelete(key K) (value V, loaded bool) {
 	me.l.Lock()
 	defer me.l.Unlock()
@@ -48,13 +50,26 @@ func (me *SyncMap[K, V]) LoadAndDelete(key K) (value V, loaded bool) {
 	return
 }
 
-func (me *SyncMap[K, V]) LoadAndStore(key K, value V) (actual V, loaded bool) {
+// LoadOrStore returns the existing value for the key if present.
+// Otherwise, it stores and returns the given value. The loaded result is true if the value was loaded, false if stored.
+func (me *SyncMap[K, V]) LoadOrStore(key K, value V) (actual V, loaded bool) {
 	me.l.Lock()
 	defer me.l.Unlock()
 	actual, loaded = me.m[key]
-	me.m[key] = value
 	if !loaded {
+		me.m[key] = value
 		actual = value
+	}
+	return
+}
+
+func (me *SyncMap[K, V]) LoadOrNew(key K, newFunc func() V) (actual V, loaded bool) {
+	me.l.Lock()
+	defer me.l.Unlock()
+	actual, loaded = me.m[key]
+	if !loaded {
+		actual = newFunc()
+		me.m[key] = actual
 	}
 	return
 }
