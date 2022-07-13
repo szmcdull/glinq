@@ -32,6 +32,16 @@ func (me *SyncMap[K, V]) Delete(key K) {
 	delete(me.m, key)
 }
 
+func (me *SyncMap[K, V]) DeleteIf(pred func(k K, v V) bool) {
+	me.l.Lock()
+	defer me.l.Unlock()
+	for k, v := range me.m {
+		if pred(k, v) {
+			delete(me.m, k)
+		}
+	}
+}
+
 func (me *SyncMap[K, V]) Store(key K, value V) {
 	me.l.Lock()
 	defer me.l.Unlock()
@@ -81,6 +91,8 @@ func (me *SyncMap[K, V]) Load(key K) (value V, ok bool) {
 	return
 }
 
+// f must not call any methods of me.
+// If you want to delete items using Range, use DeleteIf instead.
 func (me *SyncMap[K, V]) Range(f func(K, V) bool) {
 	me.l.RLock()
 	defer me.l.RUnlock()

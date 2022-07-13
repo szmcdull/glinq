@@ -109,3 +109,26 @@ func TestConcurrent(t *testing.T) {
 	time.Sleep(time.Second * 3)
 	close(ch)
 }
+
+// func TestRecursiveLock(t *testing.T) {
+// 	done := false
+
+// 	go func() {
+// 		time.Sleep(time.Second)
+// 		if !done {
+// 			t.Fail()
+// 		}
+// 	}()
+
+// 	m := NewSyncMap[int, int]()
+// 	m.Store(1, 1)
+// 	m.Store(2, 2)
+// 	m.Range(func(k, v int) bool {
+// 		if k == 1 {
+// 			m.Delete(k)
+// 		}
+// 		return true
+// 	})
+
+// 	done = true
+// }
