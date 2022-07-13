@@ -91,6 +91,17 @@ func (me *SyncMap[K, V]) Range(f func(K, V) bool) {
 	}
 }
 
+func (me *SyncMap[K, V]) RangeE(f func(K, V) error) error {
+	me.l.RLock()
+	defer me.l.RUnlock()
+	for k, v := range me.m {
+		if err := f(k, v); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (me *SyncMap[K, V]) ToSlice() []Pair[K, V] {
 	me.l.RLock()
 	defer me.l.RUnlock()
