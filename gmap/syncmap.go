@@ -73,6 +73,7 @@ func (me *SyncMap[K, V]) LoadOrStore(key K, value V) (actual V, loaded bool) {
 	return
 }
 
+// atomic load-or-new
 func (me *SyncMap[K, V]) LoadOrNew(key K, newFunc func() V) (actual V, loaded bool) {
 	me.l.Lock()
 	defer me.l.Unlock()
@@ -82,6 +83,17 @@ func (me *SyncMap[K, V]) LoadOrNew(key K, newFunc func() V) (actual V, loaded bo
 		me.m[key] = actual
 	}
 	return
+}
+
+// atomic load-and-update
+func (me *SyncMap[K, V]) LoadAndUpdate(key K, updateFunc func(old V) (new V, updated bool)) {
+	me.l.Lock()
+	defer me.l.Unlock()
+	old := me.m[key]
+	new, updated := updateFunc(old)
+	if updated {
+		me.m[key] = new
+	}
 }
 
 func (me *SyncMap[K, V]) Load(key K) (value V, ok bool) {
@@ -103,6 +115,8 @@ func (me *SyncMap[K, V]) Range(f func(K, V) bool) {
 	}
 }
 
+// f must not call any methods of me.
+// If you want to delete items using RangeE, use DeleteIf instead.
 func (me *SyncMap[K, V]) RangeE(f func(K, V) error) error {
 	me.l.RLock()
 	defer me.l.RUnlock()

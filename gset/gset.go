@@ -96,7 +96,41 @@ func (s HashSet[T]) String() string {
 	return string(b)
 }
 
-func (s HashSet[T]) Contains(v T) bool {
+func (s HashSet[T]) Contains(s2 HashSet[T]) bool {
+	for v2 := range s2 {
+		_, ok := s[v2]
+		if !ok {
+			return false
+		}
+	}
+	return true
+}
+
+func (s HashSet[T]) ContainsItem(v T) bool {
 	_, ok := s[v]
 	return ok
+}
+
+func (s HashSet[T]) AddItem(v T) {
+	s[v] = struct{}{}
+}
+
+func (s HashSet[T]) AddItemChecked(v T) bool {
+	if _, ok := s[v]; ok {
+		return false
+	}
+	s[v] = struct{}{}
+	return true
+}
+
+func (s HashSet[T]) RemoveItem(v T) {
+	delete(s, v)
+}
+
+func (s HashSet[T]) RemoveItemChecked(v T) bool {
+	if _, ok := s[v]; !ok {
+		return false
+	}
+	delete(s, v)
+	return true
 }
