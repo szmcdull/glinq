@@ -127,6 +127,16 @@ func LastIndexWhereP[S ~[]T, T any](l S, pred func(*T) bool) int {
 	return -1
 }
 
+// FindIf pass each index of l to pred() and returns the first i which pred(i) is true
+func FindIf[S ~[]T, T any](l S, pred func(i int) bool) int {
+	for i := range l {
+		if pred(i) {
+			return i
+		}
+	}
+	return -1
+}
+
 // copy the contents of all slices_, returns a new slice
 func Concat[S ~[]T, T any](slices_ ...S) S {
 	c := 0
