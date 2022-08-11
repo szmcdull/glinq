@@ -47,3 +47,11 @@ func TestShallowCopy(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func ExampleFindIf() {
+	list := []int{1, 2, 3, 4, 5}
+	pos := FindIf(list, func(i int) bool {
+		return list[i] == 3
+	})
+	fmt.Println(pos) // 2
+}

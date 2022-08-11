@@ -16,6 +16,7 @@ type (
 	}
 )
 
+// like LINQ.Select, map a slice to another slice
 func Map[Src any, Dst any](l []Src, f func(Src) Dst) []Dst {
 	result := make([]Dst, len(l))
 	for i, src := range l {
@@ -34,11 +35,13 @@ func Apply[S ~[]T, T any](l S, fun func(T) error) error {
 	return nil
 }
 
+// Calculate the average of a slice of numbers
 func Average[S ~[]T, T Number](l S) T {
 	result := Sum[S, T](l) / T(len(l))
 	return result
 }
 
+// Sum a slice of numbers
 func Sum[S ~[]T, T Number](l S) T {
 	var sum T
 	for _, x := range l {
@@ -47,6 +50,7 @@ func Sum[S ~[]T, T Number](l S) T {
 	return sum
 }
 
+// find first matching element
 func First[S ~[]T, T any](l S, pred func(T) bool) (T, bool) {
 	for _, x := range l {
 		if pred(x) {
@@ -57,6 +61,7 @@ func First[S ~[]T, T any](l S, pred func(T) bool) (T, bool) {
 	return r, false
 }
 
+// find last matching element
 func Last[S ~[]T, T any](l S, pred func(T) bool) (T, bool) {
 	for i := len(l) - 1; i >= 0; i-- {
 		x := l[i]
@@ -68,6 +73,7 @@ func Last[S ~[]T, T any](l S, pred func(T) bool) (T, bool) {
 	return r, false
 }
 
+// find the position of an element
 func IndexOf[S ~[]T, T comparable](l S, v T) int {
 	for i, x := range l {
 		if x == v {
@@ -77,6 +83,21 @@ func IndexOf[S ~[]T, T comparable](l S, v T) int {
 	return -1
 }
 
+// FindIf finds the position of an matching element.
+// Its use case the same as IndexWhere, except that you don't have to specify the type of the elements.
+// (sometimes the type is very long, or it is an anonymous/temporary type that you have to repeat the definition.)
+// It passes each index of l to pred() and returns the first i which pred(i) is true.
+// I find it interestingly handful :) It opens a new way to generics programming that does not support lambda expression.
+func FindIf[S ~[]T, T any](l S, pred func(i int) bool) int {
+	for i := range l {
+		if pred(i) {
+			return i
+		}
+	}
+	return -1
+}
+
+// find the position of an matching element
 func IndexWhere[S ~[]T, T any](l S, pred func(T) bool) int {
 	for i, x := range l {
 		if pred(x) {
@@ -86,7 +107,7 @@ func IndexWhere[S ~[]T, T any](l S, pred func(T) bool) int {
 	return -1
 }
 
-// use P version when T is a large struct, to improve performance
+// like IndexWhere but parses arguments using pointers, to avoid copying large structs and improve performance
 func IndexWhereP[S ~[]T, T any](l S, pred func(*T) bool) int {
 	for i := range l {
 		if pred(&l[i]) {
@@ -96,6 +117,7 @@ func IndexWhereP[S ~[]T, T any](l S, pred func(*T) bool) int {
 	return -1
 }
 
+// find the last position of an element
 func LastIndexOf[S ~[]T, T comparable](l S, v T) int {
 	for i := len(l) - 1; i >= 0; i-- {
 		x := l[i]
@@ -106,6 +128,7 @@ func LastIndexOf[S ~[]T, T comparable](l S, v T) int {
 	return -1
 }
 
+// find the last position of an matching element
 func LastIndexWhere[S ~[]T, T any](l S, pred func(T) bool) int {
 	for i := len(l) - 1; i >= 0; i-- {
 		x := l[i]
@@ -116,21 +139,11 @@ func LastIndexWhere[S ~[]T, T any](l S, pred func(T) bool) int {
 	return -1
 }
 
-// use P version when T is a large struct, to improve performance
+// like LastIndexWhere but parses arguments using pointers, to avoid copying large structs and improve performance
 func LastIndexWhereP[S ~[]T, T any](l S, pred func(*T) bool) int {
 	for i := len(l) - 1; i >= 0; i-- {
 		x := &l[i]
 		if pred(x) {
-			return i
-		}
-	}
-	return -1
-}
-
-// FindIf pass each index of l to pred() and returns the first i which pred(i) is true
-func FindIf[S ~[]T, T any](l S, pred func(i int) bool) int {
-	for i := range l {
-		if pred(i) {
 			return i
 		}
 	}

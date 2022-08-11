@@ -30,4 +30,10 @@ func main() {
 	l2 := []string{`the`, `lazy`, `dog`, `jumps`, `over`, `the`, `silver`, `fox`}
 	garray.SortByDescending(l2, func(x string) byte { return x[len(x)-1] }) // sort descending by the last character
 	fmt.Printf("%v\n", l2)                                                  // [lazy fox jumps silver over dog the the]
+
+	list := []int{1, 2, 3, 4, 5}
+	pos := garray.FindIf(list, func(i int) bool {
+		return list[i] == 3
+	})
+	fmt.Println(pos) // 2
 }
