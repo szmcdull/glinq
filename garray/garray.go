@@ -97,6 +97,22 @@ func FindIf[S ~[]T, T any](l S, pred func(i int) bool) int {
 	return -1
 }
 
+// RemoveIf removes matching items.
+func RemoveIf[S ~[]T, T any](l S, pred func(i int) bool) (result S, deleted int) {
+	result = make(S, 0, len(l))
+	for i := range l {
+		if !pred(i) {
+			result = append(result, l[i])
+		} else {
+			deleted++
+		}
+	}
+	if deleted == 0 {
+		return l, 0
+	}
+	return result, deleted
+}
+
 // find the position of an matching element
 func IndexWhere[S ~[]T, T any](l S, pred func(T) bool) int {
 	for i, x := range l {

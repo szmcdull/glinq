@@ -53,5 +53,15 @@ func ExampleFindIf() {
 	pos := FindIf(list, func(i int) bool {
 		return list[i] == 3
 	})
-	fmt.Println(pos) // 2
+	fmt.Println(pos)
+	// output: 2
+}
+
+func ExampleRemoveIf() {
+	list := []int{1, 2, 3, 1, 2, 3, 1, 2, 3}
+	result, deleted := RemoveIf(list, func(i int) bool {
+		return list[i] == 2
+	})
+	fmt.Println(result, deleted)
+	// output: [1 3 1 3 1 3] 3
 }
