@@ -25,10 +25,62 @@ func Map[Src any, Dst any](l []Src, f func(Src) Dst) []Dst {
 	return result
 }
 
+func MapI[Src any, Dst any](l []Src, f func(i int) Dst) []Dst {
+	result := make([]Dst, len(l))
+	for i := range l {
+		result[i] = f(i)
+	}
+	return result
+}
+
+func MapIE[Src any, Dst any](l []Src, f func(i int) (Dst, error)) (result []Dst, err error) {
+	result = make([]Dst, len(l))
+	for i := range l {
+		result[i], err = f(i)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return result, nil
+}
+
+func FilterI[Src any](l []Src, f func(i int) bool) (result []Src) {
+	result = make([]Src, 0, len(l)/2)
+	for i := range l {
+		if f(i) {
+			result = append(result, l[i])
+		}
+	}
+	return
+}
+
+func FilterIE[Src any](l []Src, f func(i int) (bool, error)) (result []Src, err error) {
+	result = make([]Src, 0, len(l)/2)
+	for i := range l {
+		if r, err := f(i); err == nil {
+			if r {
+				result = append(result, l[i])
+			}
+		} else {
+			return nil, err
+		}
+	}
+	return result, nil
+}
+
 // Apply a function to each item of a slice
 func Apply[S ~[]T, T any](l S, fun func(T) error) error {
 	for i := range l {
 		if err := fun(l[i]); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func ApplyI[S ~[]T, T any](l S, fun func(int) error) error {
+	for i := range l {
+		if err := fun(i); err != nil {
 			return err
 		}
 	}
@@ -84,7 +136,7 @@ func IndexOf[S ~[]T, T comparable](l S, v T) int {
 }
 
 // FindIf finds the position of an matching element.
-// Its use case the same as IndexWhere, except that you don't have to specify the type of the elements.
+// Its use case is the same as IndexWhere, except that you don't have to specify the type of the elements.
 // (sometimes the type is very long, or it is an anonymous/temporary type that you have to repeat the definition.)
 // It passes each index of l to pred() and returns the first i which pred(i) is true.
 // I find it interestingly handful :) It opens a new way to generics programming that does not support lambda expression.
