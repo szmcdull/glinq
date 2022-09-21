@@ -44,6 +44,16 @@ func MapIE[Src any, Dst any](l []Src, f func(i int) (Dst, error)) (result []Dst,
 	return result, nil
 }
 
+func Filter[Src any](l []Src, f func(Src) bool) (result []Src) {
+	result = make([]Src, 0, len(l)/2)
+	for _, x := range l {
+		if f(x) {
+			result = append(result, x)
+		}
+	}
+	return
+}
+
 func FilterI[Src any](l []Src, f func(i int) bool) (result []Src) {
 	result = make([]Src, 0, len(l)/2)
 	for i := range l {
