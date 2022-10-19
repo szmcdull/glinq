@@ -2,6 +2,7 @@ package glinq
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -10,6 +11,20 @@ func TestFromSlice(t *testing.T) {
 	count := sl.Count()
 	if count != 6 {
 		t.Errorf(`len=%d expected 6`, count)
+	}
+}
+
+func TestLines(t *testing.T) {
+	q := ReadLines(strings.NewReader(`aaa
+bbb
+ccc
+ddd`))
+	sl, err := ToSlice[string](q)
+	if err != nil {
+		t.Error(err)
+	}
+	if sl[0] != `aaa` || sl[1] != `bbb` || sl[3] != `ddd` {
+		t.Fail()
 	}
 }
 

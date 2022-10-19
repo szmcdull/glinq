@@ -8,12 +8,12 @@ import (
 type (
 	IEnumerator[T any] interface {
 		Current() T
-		MoveNext() error // 返回nil=成功, io.EOF=已到最后一个, 其他=错误
+		MoveNext() error // nil=success, io.EOF=reached last item, other=error occurred
 		//Reset() error
 	}
 	IEnumerable[T any] interface {
 		GetEnumerator() IEnumerator[T]
-		Count() int
+		Count() int // may panic if not supported by underlying enumerator
 		Any() bool
 	}
 	IRangeEnumerator[T any] interface {
@@ -30,7 +30,7 @@ type (
 )
 
 var (
-	ErrInvalidState = errors.New(`Invalid state`)
+	ErrInvalidState = errors.New(`invalid state`)
 )
 
 func ToSlice[T any](me IEnumerable[T]) ([]T, error) {

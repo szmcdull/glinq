@@ -1,6 +1,7 @@
 package glinq
 
 import (
+	"bufio"
 	"io"
 	"reflect"
 )
@@ -10,6 +11,11 @@ type (
 	SliceEnumerator[T any] struct {
 		s   Slice[T]
 		pos int
+	}
+
+	LineEnumerator struct {
+		reader  *bufio.Reader
+		scanner *bufio.Scanner
 	}
 
 	Pair[K comparable, V any] struct {
@@ -111,6 +117,48 @@ func (me *SliceEnumerator[T]) MoveNext() error {
 func (me *SliceEnumerator[T]) Reset() error {
 	me.pos = -1
 	return nil
+}
+
+func ReadLines(reader io.Reader) *LineEnumerator {
+	var r *bufio.Reader
+	var ok bool
+
+	if r, ok = reader.(*bufio.Reader); !ok {
+		r = bufio.NewReader(reader)
+	}
+	return &LineEnumerator{
+		reader:  r,
+		scanner: bufio.NewScanner(reader),
+	}
+}
+
+func (me *LineEnumerator) GetEnumerator() IEnumerator[string] {
+	return me
+}
+
+func (me *LineEnumerator) MoveNext() error {
+	if me.scanner.Scan() {
+		return nil
+	} else {
+		err := me.scanner.Err()
+		if err == nil {
+			err = io.EOF
+		}
+		return err
+	}
+}
+
+func (me *LineEnumerator) Current() string {
+	return me.scanner.Text()
+}
+
+func (me *LineEnumerator) Any() bool {
+	_, err := me.reader.Peek(1)
+	return err != nil
+}
+
+func (me *LineEnumerator) Count() int {
+	panic(`not implemented`)
 }
 
 func (me Map[K, V]) Count() int {
