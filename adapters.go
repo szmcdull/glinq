@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"io"
 	"reflect"
+	"sync/atomic"
 )
 
 type (
@@ -16,6 +17,7 @@ type (
 	LineEnumerator struct {
 		reader  *bufio.Reader
 		scanner *bufio.Scanner
+		taken   int32
 	}
 
 	Pair[K comparable, V any] struct {
@@ -133,7 +135,10 @@ func ReadLines(reader io.Reader) *LineEnumerator {
 }
 
 func (me *LineEnumerator) GetEnumerator() IEnumerator[string] {
-	return me
+	if atomic.CompareAndSwapInt32(&me.taken, 0, 1) {
+		return me
+	}
+	panic(`read iterators cannot be read more than once`)
 }
 
 func (me *LineEnumerator) MoveNext() error {
@@ -158,7 +163,7 @@ func (me *LineEnumerator) Any() bool {
 }
 
 func (me *LineEnumerator) Count() int {
-	panic(`not implemented`)
+	return -1
 }
 
 func (me Map[K, V]) Count() int {

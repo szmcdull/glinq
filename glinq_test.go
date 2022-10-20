@@ -220,6 +220,28 @@ func TestSkip(t *testing.T) {
 	}
 }
 
+func TestSkipWhile(t *testing.T) {
+	q := Range(0, 10)
+	q = SkipWhile(q, func(x int) bool { return x < 3 })
+	sl, err := ToSlice(q)
+	if err != nil || q.Count() != 7 || len(sl) != 7 {
+		t.Errorf(`err=%v count=%d len=%d expected 7`, err, q.Count(), len(sl))
+	}
+	if sl[0] != 3 || sl[6] != 9 {
+		t.Errorf(`[0]=%v expected 3 [6]=%v expected 9`, sl[0], sl[6])
+	}
+
+	q = Where(Range(0, 10), func(int) bool { return true }) // test non-seekable iter
+	q = SkipWhile(q, func(x int) bool { return x < 3 })
+	sl, err = ToSlice(q)
+	if err != nil || q.Count() != 7 || len(sl) != 7 {
+		t.Errorf(`err=%v count=%d len=%d expected 7`, err, q.Count(), len(sl))
+	}
+	if sl[0] != 3 || sl[6] != 9 {
+		t.Errorf(`[0]=%v expected 3 [6]=%v expected 9`, sl[0], sl[6])
+	}
+}
+
 func TestTake(t *testing.T) {
 	q := Range(0, 10)
 	q = Take(q, 3)
@@ -233,6 +255,28 @@ func TestTake(t *testing.T) {
 
 	q = Where(Range(0, 10), func(int) bool { return true }) // test non-seekable iter
 	q = Take(q, 3)
+	sl, err = ToSlice(q)
+	if err != nil || q.Count() != 3 || len(sl) != 3 {
+		t.Errorf(`err=%v count=%d len=%d expected 3`, err, q.Count(), len(sl))
+	}
+	if sl[0] != 0 || sl[2] != 2 {
+		t.Errorf(`[0]=%v expected 0 [2]=%v expected 2`, sl[0], sl[2])
+	}
+}
+
+func TestTakeWhile(t *testing.T) {
+	q := Range(0, 10)
+	q = TakeWhile(q, func(x int) bool { return x < 3 })
+	sl, err := ToSlice(q)
+	if err != nil || q.Count() != 3 || len(sl) != 3 {
+		t.Errorf(`err=%v count=%d len=%d expected 3`, err, q.Count(), len(sl))
+	}
+	if sl[0] != 0 || sl[2] != 2 {
+		t.Errorf(`[0]=%v expected 0 [2]=%v expected 2`, sl[0], sl[2])
+	}
+
+	q = Where(Range(0, 10), func(int) bool { return true }) // test non-seekable iter
+	q = TakeWhile(q, func(x int) bool { return x < 3 })
 	sl, err = ToSlice(q)
 	if err != nil || q.Count() != 3 || len(sl) != 3 {
 		t.Errorf(`err=%v count=%d len=%d expected 3`, err, q.Count(), len(sl))

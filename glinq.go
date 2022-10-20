@@ -13,7 +13,7 @@ type (
 	}
 	IEnumerable[T any] interface {
 		GetEnumerator() IEnumerator[T]
-		Count() int // may panic if not supported by underlying enumerator
+		Count() int // returns -1 when not supported by underlying data source
 		Any() bool
 	}
 	IRangeEnumerator[T any] interface {
