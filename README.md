@@ -12,7 +12,6 @@ Currently implemented
 - Sum
 - First
 - Last
-- Skip
 - Skip(While)
 - Take(While)
 - Contains

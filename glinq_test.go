@@ -373,7 +373,7 @@ func TestJoin(t *testing.T) {
 				if o.id == i.countryId {
 					return true, all{o, i}
 				}
-				return false, all{}
+				return
 			}))
 	if err != nil {
 		t.Error(err.Error())
