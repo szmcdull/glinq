@@ -13,16 +13,28 @@ Currently implemented
 - First
 - Last
 - Skip
-- Take
+- Skip(While)
+- Take(While)
 - Contains
 - Any
 - Join
+
+Adapters:
+- FromSlice
+- FromMap
+- ReadLines	(wrapping bufio.NewScanner)
+- sqlxq.Queryx (wrapping sqlx.Queryx)
+
+- ToSlice
+- ToMap
 
 Also some similar utilities directly for slices in the glinq/garray package. These are more handful, without FromSlice/ToSlice conversion.
 - Sort(Descending)
 - SortBy(Descending)
 - Map
+- Filter
 - Apply
+- RemoveIf
 - (Last)IndexOf
 - (Last)IndexWhere
 - First, Last
@@ -32,6 +44,16 @@ Also some similar utilities directly for slices in the glinq/garray package. The
 - Average
 
 Also a generic SyncMap type (should I separate it in another repository?)
+- Load
+- Store
+- Range(E)
+- Delete(If)
+- LoadAndDelete
+- LoadOrStore
+- LoadOrNew
+- LoadAndUpdate
+- ToSlice
+- Len
 
 And more to come...
 
