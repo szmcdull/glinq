@@ -18,6 +18,8 @@ Currently implemented
 - Any
 - Join
 
+(`OrderBy` And `GroupBy` will always access all items. For performance and ease of use reason I'll not implement them in IEnumerable way. Please use `glinq/garray` package instead)
+
 Adapters:
 - FromSlice
 - FromMap
@@ -27,7 +29,7 @@ Adapters:
 - ToSlice
 - ToMap
 
-Also some similar utilities directly for slices in the glinq/garray package. These are more handful, without FromSlice/ToSlice conversion.
+Also some similar utilities directly for slices in the `glinq/garray` package. These are more handful, without FromSlice/ToSlice conversion.
 - Sort(Descending)
 - SortBy(Descending)
 - Map
@@ -41,6 +43,7 @@ Also some similar utilities directly for slices in the glinq/garray package. The
 - ShallowCopy
 - Sum
 - Average
+- GroupBy
 
 Also a generic SyncMap type (should I separate it in another repository?)
 - Load

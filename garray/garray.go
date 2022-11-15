@@ -44,6 +44,7 @@ func MapIE[Src any, Dst any](l []Src, f func(i int) (Dst, error)) (result []Dst,
 	return result, nil
 }
 
+// Filter selects items that f() returns true
 func Filter[Src any](l []Src, f func(Src) bool) (result []Src) {
 	result = make([]Src, 0, len(l)/2)
 	for _, x := range l {
@@ -54,6 +55,7 @@ func Filter[Src any](l []Src, f func(Src) bool) (result []Src) {
 	return
 }
 
+// FilterI selects items that f() returns true
 func FilterI[Src any](l []Src, f func(i int) bool) (result []Src) {
 	result = make([]Src, 0, len(l)/2)
 	for i := range l {
@@ -64,6 +66,7 @@ func FilterI[Src any](l []Src, f func(i int) bool) (result []Src) {
 	return
 }
 
+// FilterIE selects items that f() returns true
 func FilterIE[Src any](l []Src, f func(i int) (bool, error)) (result []Src, err error) {
 	result = make([]Src, 0, len(l)/2)
 	for i := range l {
