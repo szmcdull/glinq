@@ -1,6 +1,7 @@
 package garray
 
-// group a slice of T by a key, resulting groups of slice of R
+// group a slice of T by a key, resulting groups of slice of R.
+// For incomparable keys, please fmt.Sprintf it to a string
 func GroupBy[T any, Slice ~[]T, R any, Key comparable](a Slice, keyF func(v T) Key, resultF func(T) R) map[Key][]R {
 	m := make(map[Key][]R)
 	for _, v := range a {
@@ -12,7 +13,8 @@ func GroupBy[T any, Slice ~[]T, R any, Key comparable](a Slice, keyF func(v T) K
 	return m
 }
 
-// group a slice of T by a key, resulting groups of slice of R
+// group a slice of T by a key, resulting groups of slice of R.
+// For incomparable keys, please fmt.Sprintf it to a string
 func GroupByP[T any, Slice ~[]T, R any, Key comparable](a Slice, keyF func(v *T) Key, resultF func(*T) R) map[Key][]R {
 	m := make(map[Key][]R)
 	for i := range a {
@@ -24,5 +26,3 @@ func GroupByP[T any, Slice ~[]T, R any, Key comparable](a Slice, keyF func(v *T)
 	}
 	return m
 }
-
-// todo: incomparable group by, using a customized comparer

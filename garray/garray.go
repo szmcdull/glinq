@@ -102,7 +102,7 @@ func ApplyI[S ~[]T, T any](l S, fun func(int) error) error {
 
 // Calculate the average of a slice of numbers
 func Average[S ~[]T, T Number](l S) T {
-	result := Sum[S, T](l) / T(len(l))
+	result := Sum(l) / T(len(l))
 	return result
 }
 
