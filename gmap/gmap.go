@@ -20,3 +20,11 @@ func Map[K comparable, V any, R any](m map[K]V, f func(K, V) R) []R {
 	}
 	return result
 }
+
+func ShallowCopy[K comparable, V any](m map[K]V) map[K]V {
+	result := make(map[K]V, len(m))
+	for k, v := range m {
+		result[k] = v
+	}
+	return result
+}

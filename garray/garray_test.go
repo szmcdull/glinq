@@ -46,6 +46,9 @@ func TestShallowCopy(t *testing.T) {
 
 		t.Fail()
 	}
+	if &l[0] == &result[0] {
+		t.Fail()
+	}
 }
 
 func ExampleFindIf() {
