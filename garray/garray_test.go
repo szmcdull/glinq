@@ -35,6 +35,26 @@ func TestMap(t *testing.T) {
 	}
 }
 
+func ExampleMapIE() {
+	type student struct {
+		name string
+		age  int
+	}
+
+	students := []student{{`Jack`, 10}, {`Mike`, 20}, {`Rose`, 15}}
+
+	studentAges, err := ToMapIE(students,
+		func(i int) (string, error) { return students[i].name, nil },
+		func(i int) (int, error) { return students[i].age, nil })
+	if err != nil {
+		fmt.Print(err)
+	} else {
+		fmt.Print(studentAges)
+	}
+
+	// output: map[Jack:10 Mike:20 Rose:15]
+}
+
 func TestShallowCopy(t *testing.T) {
 	l := []int{1, 2, 3, 4, 5}
 	result := ShallowCopy(l)

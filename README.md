@@ -33,6 +33,7 @@ Also some similar utilities directly for slices in the `glinq/garray` package. T
 - Sort(Descending)
 - SortBy(Descending)
 - Map
+- ToMap
 - Filter
 - Apply
 - RemoveIf

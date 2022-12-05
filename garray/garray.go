@@ -1,6 +1,7 @@
 package garray
 
 import (
+	"fmt"
 	"time"
 
 	"golang.org/x/exp/constraints"
@@ -41,6 +42,51 @@ func MapIE[Src any, Dst any](l []Src, f func(i int) (Dst, error)) (result []Dst,
 			return nil, err
 		}
 	}
+	return result, nil
+}
+
+func ToMapI[T any, K comparable, V any](
+	list []T, keyF func(i int) K, valF func(i int) V) (map[K]V, error) {
+
+	result := map[K]V{}
+
+	for i := range list {
+		k := keyF(i)
+
+		if _, ok := result[k]; ok {
+			return nil, fmt.Errorf(`duplicated key %v`, k)
+		}
+
+		v := valF(i)
+
+		result[k] = v
+	}
+
+	return result, nil
+}
+
+func ToMapIE[T any, K comparable, V any](
+	list []T, keyF func(i int) (K, error), valF func(i int) (V, error)) (map[K]V, error) {
+
+	result := map[K]V{}
+
+	for i := range list {
+		k, err := keyF(i)
+		if err != nil {
+			return nil, err
+		}
+
+		if _, ok := result[k]; ok {
+			return nil, fmt.Errorf(`duplicated key %v`, k)
+		}
+
+		v, err := valF(i)
+		if err != nil {
+			return nil, err
+		}
+		result[k] = v
+	}
+
 	return result, nil
 }
 
