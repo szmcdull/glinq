@@ -88,3 +88,15 @@ func ExampleRemoveIf() {
 	fmt.Println(result, deleted)
 	// output: [1 3 1 3 1 3] 3
 }
+
+func ExampleCount() {
+	l := []int{1, 0, 1, 0, 1}
+	fmt.Println(Count(l, 1))
+	// output: 3
+}
+
+func ExampleCountIf() {
+	l := []int{1, 2, 3, 4, 5}
+	fmt.Println(CountIf(l, func(i int) bool { return i/2*2 == i }))
+	// output: 2
+}

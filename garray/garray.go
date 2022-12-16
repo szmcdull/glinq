@@ -300,3 +300,23 @@ func ShallowCopy[T any](s slice[T]) slice[T] {
 	copy(result, s)
 	return result
 }
+
+func Count[T comparable](s slice[T], v T) int {
+	count := 0
+	for i := range s {
+		if s[i] == v {
+			count++
+		}
+	}
+	return count
+}
+
+func CountIf[T comparable](s slice[T], pred func(v T) bool) int {
+	count := 0
+	for i := range s {
+		if pred(s[i]) {
+			count++
+		}
+	}
+	return count
+}

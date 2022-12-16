@@ -45,6 +45,7 @@ Also some similar utilities directly for slices in the `glinq/garray` package. T
 - Sum
 - Average
 - GroupBy
+- Count
 
 Also a generic SyncMap type (should I separate it in another repository?)
 - Load
@@ -99,4 +100,7 @@ func main() {
 }
 ```
 
-**See [glinq_test.go](https://github.com/szmcdull/glinq/blob/main/unsafe/glinq_test.go), [garray_test.go](https://github.com/szmcdull/glinq/blob/main/garray/garray_test.go), and other tests for more examples**
+**More examples:**
+- [garray doc](https://pkg.go.dev/github.com/szmcdull/glinq/garray)
+- [glinq_test.go](https://github.com/szmcdull/glinq/blob/main/unsafe/glinq_test.go)
+- [garray_test.go](https://github.com/szmcdull/glinq/blob/main/garray/garray_test.go)
