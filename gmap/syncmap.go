@@ -143,3 +143,9 @@ func (me *SyncMap[K, V]) Len() int {
 	defer me.l.RUnlock()
 	return len(me.m)
 }
+
+func (me *SyncMap[K, V]) Clear() {
+	me.l.Lock()
+	me.m = map[K]V{}
+	me.l.Unlock()
+}
