@@ -100,3 +100,14 @@ func ExampleCountIf() {
 	fmt.Println(CountIf(l, func(i int) bool { return i/2*2 == i }))
 	// output: 2
 }
+
+func ExampleReverse() {
+	l := []int{1, 2, 3, 4}
+	Reverse(l)
+	fmt.Println(l)
+	l = []int{1, 2, 3}
+	Reverse(l)
+	fmt.Println(l)
+	// output: [4 3 2 1]
+	// [3 2 1]
+}

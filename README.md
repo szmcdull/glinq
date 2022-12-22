@@ -46,6 +46,7 @@ Also some similar utilities directly for slices in the `glinq/garray` package. T
 - Average
 - GroupBy
 - Count
+- Reverse
 
 Also a generic SyncMap type (should I separate it in another repository?)
 - Load
@@ -58,6 +59,7 @@ Also a generic SyncMap type (should I separate it in another repository?)
 - LoadAndUpdate
 - ToSlice
 - Len
+- Clear
 
 And more to come...
 
