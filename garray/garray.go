@@ -26,6 +26,17 @@ func Map[Src any, Dst any](l []Src, f func(Src) Dst) []Dst {
 	return result
 }
 
+func MapE[Src any, Dst any](l []Src, f func(Src) (Dst, error)) (result []Dst, err error) {
+	result = make([]Dst, len(l))
+	for i, src := range l {
+		result[i], err = f(src)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return result, nil
+}
+
 func MapI[Src any, Dst any](l []Src, f func(i int) Dst) []Dst {
 	result := make([]Dst, len(l))
 	for i := range l {
