@@ -37,6 +37,7 @@ Also some similar utilities directly for slices in the `glinq/garray` package. T
 - Filter
 - Apply
 - RemoveIf
+- Contains
 - (Last)IndexOf
 - (Last)IndexWhere
 - First, Last

@@ -205,6 +205,16 @@ func IndexOf[S ~[]T, T comparable](l S, v T) int {
 	return -1
 }
 
+// check if l contains v
+func Contains[S ~[]T, T comparable](l S, v T) bool {
+	for _, x := range l {
+		if x == v {
+			return true
+		}
+	}
+	return false
+}
+
 // FindIf finds the position of an matching element.
 // Its use case is the same as IndexWhere, except that you don't have to specify the type of the elements.
 // (sometimes the type is very long, or it is an anonymous/temporary type that you have to repeat the definition.)
