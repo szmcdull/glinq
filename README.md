@@ -59,6 +59,7 @@ Also a generic SyncMap type (should I separate it in another repository?)
 - LoadOrNew
 - LoadAndUpdate
 - ToSlice
+- Keys
 - Len
 - Clear
 

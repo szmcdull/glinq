@@ -12,6 +12,15 @@ func ToSlice[K comparable, V any](m map[K]V) []Pair[K, V] {
 	return result
 }
 
+// Keys returns the keys of a map as a slice
+func Keys[K comparable, V any](m map[K]V) []K {
+	result := make([]K, 0, len(m))
+	for k := range m {
+		result = append(result, k)
+	}
+	return result
+}
+
 // Map iterate through a map and generate a R[]
 func Map[K comparable, V any, R any](m map[K]V, f func(K, V) R) []R {
 	result := make([]R, 0, len(m))
