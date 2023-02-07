@@ -149,3 +149,11 @@ func (me *SyncMap[K, V]) Clear() {
 	me.m = map[K]V{}
 	me.l.Unlock()
 }
+
+func (me *SyncMap[K, V]) PopAll() map[K]V {
+	me.l.Lock()
+	result := me.m
+	me.m = map[K]V{}
+	me.l.Unlock()
+	return result
+}

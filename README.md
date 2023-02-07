@@ -62,6 +62,7 @@ Also a generic SyncMap type (should I separate it in another repository?)
 - Keys
 - Len
 - Clear
+- PopAll
 
 And more to come...
 
