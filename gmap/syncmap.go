@@ -185,3 +185,12 @@ func (me *SyncMap[K, V]) UnmarshalJSON(b []byte) error {
 // 	err = decoder.Decode(v)
 // 	return
 // }
+
+// Replace the map with a new one, and returns the old one
+func (me *SyncMap[K, V]) Replace(m map[K]V) map[K]V {
+	me.l.Lock()
+	result := me.m
+	me.m = m
+	me.l.Unlock()
+	return result
+}
