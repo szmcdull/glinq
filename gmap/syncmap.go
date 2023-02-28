@@ -1,6 +1,9 @@
 package gmap
 
-import "sync"
+import (
+	"encoding/json"
+	"sync"
+)
 
 type (
 	SyncMap[K comparable, V any] struct {
@@ -157,3 +160,28 @@ func (me *SyncMap[K, V]) PopAll() map[K]V {
 	me.l.Unlock()
 	return result
 }
+
+// MarshalJSON implements the interface MarshalJSON for json.Marshal.
+func (me *SyncMap[K, V]) MarshalJSON() ([]byte, error) {
+	me.l.RLock()
+	defer me.l.RUnlock()
+	return json.Marshal(me.m)
+}
+
+// UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
+func (me *SyncMap[K, V]) UnmarshalJSON(b []byte) error {
+	me.l.Lock()
+	defer me.l.Unlock()
+	//if err := UnmarshalUseNumber(b, &me.m); err != nil {
+	if err := json.Unmarshal(b, &me.m); err != nil {
+		return err
+	}
+	return nil
+}
+
+// func UnmarshalUseNumber(data []byte, v interface{}) (err error) {
+// 	decoder := json.NewDecoder(bytes.NewReader(data))
+// 	decoder.UseNumber()
+// 	err = decoder.Decode(v)
+// 	return
+// }

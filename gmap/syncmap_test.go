@@ -132,3 +132,13 @@ func TestConcurrent(t *testing.T) {
 
 // 	done = true
 // }
+
+func TestClear(t *testing.T) {
+	m := NewSyncMap[int, int]()
+	m.Store(1, 2)
+	m.Clear()
+	if m.Len() != 0 {
+		t.Fail()
+	}
+	m.Store(1, 2)
+}
