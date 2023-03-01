@@ -347,3 +347,30 @@ func Reverse[S ~[]T, T any](s S) {
 		s[i], s[j] = s[j], s[i]
 	}
 }
+
+// may cause circular package dependency in the future
+// func Distinct[S ~[]T, T comparable](s S) S {
+// 	return gset.NewFromSlice(s).ToSlice()
+// }
+
+// caution should be taken: push/pop may cause multiple slices share the same underlying memory buffer
+func Push[S ~[]T, T any](s S, v T) S {
+	return append(s, v)
+}
+
+// caution should be taken: push/pop may cause multiple slices share the same underlying memory buffer
+func Pop[S ~[]T, T any](s S) (S, T) {
+	i := len(s) - 1
+	return s[0:i], s[i]
+}
+
+func PushHead[S ~[]T, T any](s S, v T) S {
+	result := make(S, 1, len(s)+1)
+	result[0] = v
+	result = append(result, s...)
+	return result
+}
+
+func PopHead[S ~[]T, T any](s S) (S, T) {
+	return s[1:], s[1]
+}
