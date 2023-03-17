@@ -2,6 +2,8 @@ package garray
 
 import (
 	"fmt"
+	"log"
+	"strings"
 	"testing"
 )
 
@@ -110,4 +112,67 @@ func ExampleReverse() {
 	fmt.Println(l)
 	// output: [4 3 2 1]
 	// [3 2 1]
+}
+
+func ExampleFilter() {
+	lst := []int{1, 2, 3, 4, 5, 6}
+	isEven := func(n int) bool { return n%2 == 0 } // expected filtered array of even numbers
+
+	evens := Filter(lst, isEven)
+	fmt.Println(evens)
+	// Output: [2 4 6]
+}
+
+func ExampleFilterI() {
+	lst := []string{"apple", "banana", "cherry", "grape"}
+	firstTwoItems := func(i int) bool {
+		return i < 2 // expected Filtered array of first two items from the list
+	}
+
+	result := FilterI(lst, firstTwoItems)
+	fmt.Println(result)
+	// Output: [apple banana]
+}
+
+func ExampleFilterIE() {
+	nums := []int{1, 2, 3, 4, 5}
+
+	evenNums := func(i int) (bool, error) {
+		return nums[i]%2 == 0, nil // expected filterd array with only even numbers
+	}
+
+	filteredNums, _ := FilterIE(nums, evenNums)
+	fmt.Println(filteredNums)
+	// Output: [2 4]
+}
+
+func ExampleApply() {
+	numList := []int{1, 2, 3, 4, 5, 6}
+	double := func(n int) error {
+		fmt.Print(n*2, " ")
+		return nil
+	}
+
+	err := Apply(numList, double)
+	if err != nil {
+		fmt.Println("Error Occured")
+	}
+	// expected output to be array elements multiplied by 2
+	// Output:2 4 6 8 10 12
+}
+
+func ExampleApplyI() {
+	words := []string{"bar", "foo"}
+	var capitalize = func(i int) error {
+		words[i] = strings.ToUpper(words[i])
+		return nil
+	}
+
+	err := ApplyI(words, capitalize)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%v\n", words)
+	// all elements capitalized
+	// Output:[BAR FOO]
 }
