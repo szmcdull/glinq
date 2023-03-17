@@ -1,6 +1,7 @@
 package garray
 
 import (
+	"fmt"
 	"sort"
 	"testing"
 )
@@ -43,4 +44,108 @@ func TestOrderBy(t *testing.T) {
 			t.Errorf(`#%d = %s expected %s`, i, l[i], r2[i])
 		}
 	}
+}
+
+func ExampleSort() {
+	l := []int{3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5}
+	Sort(l)
+	fmt.Println(l)
+	// Output: [1 1 2 3 3 4 5 5 5 6 9]
+}
+
+func ExampleSortDescending() {
+	l := []string{"pineapple", "apple", "banana", "pear", "cherry", "orange"}
+	SortDescending(l)
+	fmt.Println(l)
+	// Output: [pineapple pear orange cherry banana apple]
+}
+
+func ExampleOrderBy() {
+	type Person struct {
+		Name string
+		Age  int
+	}
+	l := []Person{
+		{"Alice", 32},
+		{"Bob", 22},
+		{"Charlie", 42},
+		{"David", 27},
+	}
+	ordered := OrderBy(l, func(p Person) int { return p.Age })
+	sort.Sort(ordered)
+	for _, p := range ordered.slice {
+		fmt.Println(p.Name, p.Age)
+	}
+	// Output:
+	// Bob 22
+	// David 27
+	// Alice 32
+	// Charlie 42
+}
+
+func ExampleOrderByDescending() {
+	type Product struct {
+		Name  string
+		Price float64
+	}
+	l := []Product{
+		{"Laptop", 999.99},
+		{"Mouse", 19.99},
+		{"Keyboard", 49.99},
+		{"Headphones", 79.99},
+	}
+	ordered := OrderByDescending(l, func(p Product) float64 { return p.Price })
+	sort.Sort(ordered)
+	for _, p := range ordered.slice {
+		fmt.Println(p.Name, p.Price)
+	}
+	// Output:
+	// Laptop 999.99
+	// Headphones 79.99
+	// Keyboard 49.99
+	// Mouse 19.99
+}
+
+func ExampleSortBy() {
+	type Person struct {
+		Name string
+		Age  int
+	}
+	l := []Person{
+		{"Alice", 32},
+		{"Bob", 22},
+		{"Charlie", 42},
+		{"David", 27},
+	}
+	SortBy(l, func(p Person) int { return p.Age })
+	for _, p := range l {
+		fmt.Println(p.Name, p.Age)
+	}
+	// Output:
+	// Bob 22
+	// David 27
+	// Alice 32
+	// Charlie 42
+}
+
+func ExampleSortByDescending() {
+	type Product struct {
+		Name  string
+		Price float64
+	}
+	l := []Product{
+		{"Laptop", 999.99},
+		{"Mouse", 19.99},
+		{"Keyboard", 49.99},
+		{"Headphones", 79.99},
+	}
+	SortByDescending(l, func(p Product) float64 { return p.Price })
+	for _, p := range l {
+		fmt.Println(p.Name, p.Price)
+	}
+	// Output:
+	// Laptop 999.99
+	// Headphones 79.99
+	// Keyboard 49.99
+	// Mouse 19.99
 }
