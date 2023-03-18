@@ -1,8 +1,10 @@
 package gset
 
 import (
+	"fmt"
 	"testing"
 
+	"github.com/szmcdull/glinq/garray"
 	"github.com/szmcdull/glinq/unsafe"
 )
 
@@ -23,4 +25,13 @@ func Test(t *testing.T) {
 	if s2.Contains(s3) {
 		t.Fail()
 	}
+}
+
+func ExampleHashSet_ToSlice() {
+	set := HashSet[int]{}
+	set.AddItems(3, 2, 1, 1, 2, 3)
+	slice := set.ToSlice()
+	garray.Sort(slice)
+	fmt.Println(slice)
+	// Output: [1 2 3]
 }

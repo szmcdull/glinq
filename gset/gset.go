@@ -2,6 +2,8 @@ package gset
 
 import (
 	"fmt"
+
+	"github.com/szmcdull/glinq/gmap"
 )
 
 // Experimental. Use at your own risk
@@ -65,7 +67,7 @@ func NewFromSlice[S ~[]T, T comparable](source S) HashSet[T] {
 }
 
 func (s HashSet[T]) ToSlice() []T {
-	return s.ToSlice()
+	return gmap.Keys(s)
 }
 
 func (s HashSet[T]) Add(other map[T]struct{}) HashSet[T] {
@@ -113,6 +115,12 @@ func (s HashSet[T]) ContainsItem(v T) bool {
 
 func (s HashSet[T]) AddItem(v T) {
 	s[v] = struct{}{}
+}
+
+func (s HashSet[T]) AddItems(v ...T) {
+	for _, vv := range v {
+		s[vv] = struct{}{}
+	}
 }
 
 func (s HashSet[T]) AddItemChecked(v T) bool {

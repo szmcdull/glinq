@@ -99,7 +99,7 @@ func ExampleCount() {
 
 func ExampleCountIf() {
 	l := []int{1, 2, 3, 4, 5}
-	fmt.Println(CountIf(l, func(i int) bool { return i/2*2 == i }))
+	fmt.Println(CountIf(l, func(i int) bool { return i%2 == 0 }))
 	// output: 2
 }
 
