@@ -35,3 +35,53 @@ func ExampleHashSet_ToSlice() {
 	fmt.Println(slice)
 	// Output: [1 2 3]
 }
+
+// ExampleAdd function is used for testing Add function.
+func ExampleAdd() {
+	map1 := map[string]struct{}{
+		"a": {},
+		"b": {},
+	}
+	map2 := HashSet[string]{
+		"c": {},
+		"d": {},
+	}
+
+	Add(map1, map2)
+	fmt.Println(map1)
+	// Output: map[a:{} b:{} c:{} d:{}]
+}
+
+// ExampleSub function is used for testing Sub function.
+func ExampleSub() {
+	map1 := map[string]struct{}{
+		"a": {},
+		"b": {},
+		"c": {},
+	}
+	map2 := HashSet[string]{
+		"b": {},
+		"d": {},
+	}
+
+	Sub(map1, map2)
+	fmt.Println(map1)
+	// Output: map[a:{} c:{}]
+}
+
+// ExampleAnd function is used for testing And function.
+func ExampleAnd() {
+	map1 := HashSet[string]{
+		"a": {},
+		"b": {},
+		"c": {},
+	}
+	map2 := HashSet[string]{
+		"b": {},
+		"d": {},
+	}
+
+	And(map1, map2)
+	fmt.Println(map1)
+	// Output: Set["b"]
+}
