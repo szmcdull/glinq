@@ -158,6 +158,7 @@ func ExampleApply() {
 		fmt.Println("Error Occured")
 	}
 	// expected output to be array elements multiplied by 2
+
 	// Output:2 4 6 8 10 12
 }
 
@@ -168,11 +169,10 @@ func ExampleApplyI() {
 		return nil
 	}
 
-	err := ApplyI(words, capitalize)
+	err := ApplyI(words, capitalize) // all elements capitalized
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Printf("%v\n", words)
-	// all elements capitalized
 	// Output:[BAR FOO]
 }
