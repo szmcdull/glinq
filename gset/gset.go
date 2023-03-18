@@ -3,7 +3,9 @@ package gset
 import (
 	"fmt"
 
+	"github.com/szmcdull/glinq/garray"
 	"github.com/szmcdull/glinq/gmap"
+	"golang.org/x/exp/constraints"
 )
 
 // Experimental. Use at your own risk
@@ -63,29 +65,29 @@ func Copy[M ~map[T]struct{}, T comparable](other M) M {
 }
 
 func NewFromSlice[S ~[]T, T comparable](source S) HashSet[T] {
-	return HashSet[T](FromSlice[S, T](source))
+	return HashSet[T](FromSlice(source))
 }
 
 func (s HashSet[T]) ToSlice() []T {
 	return gmap.Keys(s)
 }
 
-func (s HashSet[T]) Add(other map[T]struct{}) HashSet[T] {
-	result := HashSet[T](Copy(s))
-	Add(result, other)
-	return result
+func (s HashSet[T]) Add(other map[T]struct{}) {
+	//result := HashSet[T](Copy(s))
+	Add(s, other)
+	//return result
 }
 
-func (s HashSet[T]) Sub(other map[T]struct{}) HashSet[T] {
-	result := HashSet[T](Copy(s))
-	Sub(result, other)
-	return result
+func (s HashSet[T]) Sub(other map[T]struct{}) {
+	//result := HashSet[T](Copy(s))
+	Sub(s, other)
+	//return result
 }
 
-func (s HashSet[T]) And(other map[T]struct{}) HashSet[T] {
-	result := HashSet[T](Copy(s))
-	And(result, other)
-	return result
+func (s HashSet[T]) And(other map[T]struct{}) {
+	//result := HashSet[T](Copy(s))
+	And(s, other)
+	//return result
 }
 
 func (s HashSet[T]) String() string {
@@ -141,4 +143,11 @@ func (s HashSet[T]) RemoveItemChecked(v T) bool {
 	}
 	delete(s, v)
 	return true
+}
+
+// Sorted returns a sorted set as []T
+func Sorted[T constraints.Ordered](s HashSet[T]) []T {
+	result := gmap.Keys(s)
+	garray.Sort(result)
+	return result
 }

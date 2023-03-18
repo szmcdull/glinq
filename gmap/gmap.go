@@ -1,5 +1,10 @@
 package gmap
 
+import (
+	"github.com/szmcdull/glinq/garray"
+	"golang.org/x/exp/constraints"
+)
+
 // ToSlice iterate through a map and generate a slice of Pair[K,V]
 func ToSlice[K comparable, V any](m map[K]V) []Pair[K, V] {
 	result := make([]Pair[K, V], 0, len(m))
@@ -19,6 +24,12 @@ func Keys[K comparable, V any](m map[K]V) []K {
 		result = append(result, k)
 	}
 	return result
+}
+
+func SortedKeys[K constraints.Ordered, V any](m map[K]V) []K {
+	keys := Keys(m)
+	garray.Sort(keys)
+	return keys
 }
 
 // Map iterate through a map and generate a R[]
