@@ -10,10 +10,8 @@ import (
 func Test(t *testing.T) {
 	s := NewFromSlice(unsafe.ToSlice(unsafe.Range(1, 11)))
 	s2 := NewFromSlice(unsafe.ToSlice(unsafe.Range(5, 15)))
-	s3 := Copy(s)
-	s4 := Copy(s)
-	s3.Add(s2)
-	s4.Sub(s2)
+	s3 := s.Add(s2)
+	s4 := s.Sub(s2)
 	if len(s3) != 14 || !s3.ContainsItem(1) || !s3.ContainsItem(2) || !s3.ContainsItem(3) || !s3.ContainsItem(4) || !s3.ContainsItem(5) || !s3.ContainsItem(6) || !s3.ContainsItem(7) || !s3.ContainsItem(8) || !s3.ContainsItem(9) || !s3.ContainsItem(10) || !s3.ContainsItem(11) || !s3.ContainsItem(12) || !s3.ContainsItem(13) || !s3.ContainsItem(14) {
 		t.Errorf(`str3=%v expected Set[1 2 3 4 5 6 7 8 9 10 11 12 13 14]`, s3.String())
 	}
@@ -30,27 +28,31 @@ func Test(t *testing.T) {
 
 func ExampleHashSet_ToSlice() {
 	set := HashSet[int]{}
-	set.AddItems(3, 2, 1, 1, 2, 3)
+	AddItems(set, 3, 2, 1, 1, 2, 3)
 	fmt.Println(Sorted(set))
 	// Output: [1 2 3]
 }
 
 func ExampleHashSet_Add() {
-	// Initialize HashSet
-	set := HashSet[string]{"apple": {}, "banana": {}}
+	// Initialize HashSets
+	set1 := HashSet[string]{"apple": {}, "banana": {}}
+	set2 := HashSet[string]{"pear": {}, "orange": {}}
+	set3 := HashSet[string]{"banana": {}, "durian": {}}
 
-	// Add other to set
-	other := map[string]struct{}{"pear": {}, "orange": {}}
-	set.Add(other)
+	// calculate the union of them
+	result := set1.
+		Add(set2).
+		Add(set3)
 
 	// Print the contents of the updated set
-	for _, k := range Sorted(set) {
+	for _, k := range Sorted(result) {
 		fmt.Println(k)
 	}
 
 	// Output:
 	// apple
 	// banana
+	// durian
 	// orange
 	// pear
 }
@@ -61,10 +63,10 @@ func ExampleHashSet_Sub() {
 
 	// Remove elements in other from set
 	other := map[string]struct{}{"pear": {}, "orange": {}}
-	set.Sub(other)
+	result := set.Sub(other)
 
 	// Print the contents of the updated set
-	for _, k := range Sorted(set) {
+	for _, k := range Sorted(result) {
 		fmt.Println(k)
 	}
 
@@ -79,10 +81,10 @@ func ExampleHashSet_And() {
 
 	// Keep only elements also in other
 	other := HashSet[string]{"apple": {}, "pear": {}, "grape": {}}
-	set.And(other)
+	result := set.And(other)
 
 	// Print the contents of the updated set
-	for _, k := range Sorted(set) {
+	for _, k := range Sorted(result) {
 		fmt.Println(k)
 	}
 
@@ -91,12 +93,37 @@ func ExampleHashSet_And() {
 	// pear
 }
 
+func ExampleAddItems() {
+	s := make(map[int]struct{})
+	AddItems(s, 1, 2, 3)
+	fmt.Println(s) // Output: map[1:{} 2:{} 3:{}]
+}
+
+func ExampleAdd() {
+	A := make(map[int]struct{})
+	B := map[int]struct{}{1: {}, 2: {}}
+	Add(A, B)
+	fmt.Println(A) // Output: map[1:{} 2:{}]
+}
+
+func ExampleSub() {
+	A := map[int]struct{}{1: {}, 2: {}, 3: {}}
+	B := map[int]struct{}{2: {}}
+	Sub(A, B)
+	fmt.Println(A) // Output: map[1:{} 3:{}]
+}
+
+func ExampleAnd() {
+	A := map[int]struct{}{1: {}, 2: {}, 3: {}}
+	B := map[int]struct{}{2: {}, 3: {}, 4: {}}
+	And(A, B)
+	fmt.Println(A) // Output: map[2:{} 3:{}]
+}
+
 func ExampleSorted() {
 	// create a new HashSet and add some elements
 	set := HashSet[int]{}
-	set.AddItem(5)
-	set.AddItem(1)
-	set.AddItem(9)
+	AddItems(set, 5, 1, 9)
 
 	// get the sorted list of elements
 	sortedList := Sorted(set)

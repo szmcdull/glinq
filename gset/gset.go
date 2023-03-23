@@ -37,6 +37,12 @@ func Add[M ~map[T]struct{}, T comparable](A, B M) {
 	}
 }
 
+func AddItems[M ~map[T]struct{}, T comparable](s M, v ...T) {
+	for _, vv := range v {
+		s[vv] = struct{}{}
+	}
+}
+
 // Remove all in B from A
 func Sub[M ~map[T]struct{}, T comparable](A, B M) {
 	for k := range A {
@@ -72,22 +78,22 @@ func (s HashSet[T]) ToSlice() []T {
 	return gmap.Keys(s)
 }
 
-func (s HashSet[T]) Add(other map[T]struct{}) {
-	//result := HashSet[T](Copy(s))
-	Add(s, other)
-	//return result
+func (s HashSet[T]) Add(other map[T]struct{}) HashSet[T] {
+	result := HashSet[T](Copy(s))
+	Add(result, other)
+	return result
 }
 
-func (s HashSet[T]) Sub(other map[T]struct{}) {
-	//result := HashSet[T](Copy(s))
-	Sub(s, other)
-	//return result
+func (s HashSet[T]) Sub(other map[T]struct{}) HashSet[T] {
+	result := HashSet[T](Copy(s))
+	Sub(result, other)
+	return result
 }
 
-func (s HashSet[T]) And(other map[T]struct{}) {
-	//result := HashSet[T](Copy(s))
-	And(s, other)
-	//return result
+func (s HashSet[T]) And(other map[T]struct{}) HashSet[T] {
+	result := HashSet[T](Copy(s))
+	And(result, other)
+	return result
 }
 
 func (s HashSet[T]) String() string {
@@ -113,16 +119,6 @@ func (s HashSet[T]) Contains(s2 HashSet[T]) bool {
 func (s HashSet[T]) ContainsItem(v T) bool {
 	_, ok := s[v]
 	return ok
-}
-
-func (s HashSet[T]) AddItem(v T) {
-	s[v] = struct{}{}
-}
-
-func (s HashSet[T]) AddItems(v ...T) {
-	for _, vv := range v {
-		s[vv] = struct{}{}
-	}
 }
 
 func (s HashSet[T]) AddItemChecked(v T) bool {
