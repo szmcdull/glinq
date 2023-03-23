@@ -78,18 +78,21 @@ func (s HashSet[T]) ToSlice() []T {
 	return gmap.Keys(s)
 }
 
+// Calculates the union of s and other, resulting a new HashSet
 func (s HashSet[T]) Add(other map[T]struct{}) HashSet[T] {
 	result := HashSet[T](Copy(s))
 	Add(result, other)
 	return result
 }
 
+// Calculates (s - other), resulting a new HashSet
 func (s HashSet[T]) Sub(other map[T]struct{}) HashSet[T] {
 	result := HashSet[T](Copy(s))
 	Sub(result, other)
 	return result
 }
 
+// Calculates the complement of s and other, resulting a new HashSet
 func (s HashSet[T]) And(other map[T]struct{}) HashSet[T] {
 	result := HashSet[T](Copy(s))
 	And(result, other)
