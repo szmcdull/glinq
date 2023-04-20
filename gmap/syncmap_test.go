@@ -18,7 +18,7 @@ func Test(t *testing.T) {
 	m.Store(3, 6)
 
 	count := 0
-	m.Range(func(k, v int) bool {
+	m.RangeNonReentrant(func(k, v int) bool {
 		if k < 1 || k > 3 {
 			t.Errorf(`unexpected k %d (should be in range[1,3])`, k)
 		}

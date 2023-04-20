@@ -133,3 +133,17 @@ func ExampleSorted() {
 
 	// Output: [1 5 9]
 }
+
+func ExampleContains() {
+	// create a new HashSet and add some elements
+	set := HashSet[int]{}
+	AddItems(set, 5, 1, 9)
+
+	// get the sorted list of elements
+	sortedList := Sorted(set)
+
+	// print the sorted list
+	fmt.Println(sortedList)
+
+	// Output: [1 5 9]
+}

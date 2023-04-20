@@ -106,9 +106,16 @@ func (me *SyncMap[K, V]) Load(key K) (value V, ok bool) {
 	return
 }
 
+// deprecated
+// f must not call any methods of me.
+// If you want to delete items using RangeNonReentrant, use DeleteIf instead.
+func (me *SyncMap[K, V]) Range(f func(K, V) bool) {
+	me.RangeNonReentrant(f)
+}
+
 // f must not call any methods of me.
 // If you want to delete items using Range, use DeleteIf instead.
-func (me *SyncMap[K, V]) Range(f func(K, V) bool) {
+func (me *SyncMap[K, V]) RangeNonReentrant(f func(K, V) bool) {
 	me.l.RLock()
 	defer me.l.RUnlock()
 	for k, v := range me.m {
