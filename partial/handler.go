@@ -30,25 +30,29 @@ func NewHandler[F any]() *Handler[F] {
 }
 
 // add a function to the handler (even if it is already added)
-func (me *Handler[F]) AddFunc(f F) {
+func (me *Handler[F]) AddFunc(f F) (subscriber any) {
 	me.lock.Lock()
 	defer me.lock.Unlock()
-	me.subscribers = append(me.subscribers, NewFunc(f))
+	result := NewFunc(f)
+	me.subscribers = append(me.subscribers, result)
+	return subscriber
 }
 
 // add a method to the handler (even if it is already added)
-func (me *Handler[F]) AddMethod(f F, receiver any) {
+func (me *Handler[F]) AddMethod(f F, receiver any) (subscriber any) {
 	me.lock.Lock()
 	defer me.lock.Unlock()
-	me.subscribers = append(me.subscribers, NewMethod(f, receiver))
+	result := NewMethod(f, receiver)
+	me.subscribers = append(me.subscribers, result)
+	return result
 }
 
-// remove a function or method from the handler. if funcOrMethod was added multiple times, all of it will be removed
-func (me *Handler[F]) Remove(funcOrMethod any) {
+// remove a function or method from the handler. if subscriber was added multiple times, all of it will be removed
+func (me *Handler[F]) Remove(subscriber any) {
 	me.lock.Lock()
 	defer me.lock.Unlock()
 	me.subscribers = garray.FilterI(me.subscribers, func(i int) bool {
-		return !me.subscribers[i].Equals(funcOrMethod)
+		return !me.subscribers[i].Equals(subscriber)
 	})
 }
 
