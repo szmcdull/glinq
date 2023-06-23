@@ -88,6 +88,20 @@ func (me *SyncMap[K, V]) LoadOrNew(key K, newFunc func() V) (actual V, loaded bo
 	return
 }
 
+// atomic load-or-new with error check
+func (me *SyncMap[K, V]) LoadOrNewE(key K, newFunc func() (V, error)) (actual V, loaded bool, err error) {
+	me.l.Lock()
+	defer me.l.Unlock()
+	actual, loaded = me.m[key]
+	if !loaded {
+		actual, err = newFunc()
+		if err != nil {
+			me.m[key] = actual
+		}
+	}
+	return
+}
+
 // atomic load-and-update
 func (me *SyncMap[K, V]) LoadAndUpdate(key K, updateFunc func(old V) (new V, updated bool)) {
 	me.l.Lock()
