@@ -172,6 +172,33 @@ func Sum[S ~[]T, T Number](l S) T {
 	return sum
 }
 
+// Sum a slice by a selector
+func SumBy[S ~[]V, V any, T Number](l S, selector func(V) T) T {
+	var sum T
+	for _, x := range l {
+		sum += selector(x)
+	}
+	return sum
+}
+
+// Sum a slice by a pointer selector
+func SumByP[S ~[]V, V any, T Number](l S, selector func(*V) T) T {
+	var sum T
+	for _, x := range l {
+		sum += selector(&x)
+	}
+	return sum
+}
+
+// Sum a slice using an index iterator
+func SumByI[S ~[]V, V any, T Number](l S, selector func(i int) T) T {
+	var sum T
+	for i := range l {
+		sum += selector(i)
+	}
+	return sum
+}
+
 // find first matching element
 func First[S ~[]T, T any](l S, pred func(T) bool) (T, bool) {
 	for _, x := range l {

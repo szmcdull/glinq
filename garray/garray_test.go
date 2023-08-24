@@ -176,3 +176,45 @@ func ExampleApplyI() {
 	fmt.Printf("%v\n", words)
 	// Output:[BAR FOO]
 }
+
+func ExampleSumBy() {
+	type student struct {
+		name string
+		age  int
+	}
+	students := []student{{`Jack`, 10}, {`Mike`, 20}, {`Rose`, 15}}
+
+	totalAge := SumBy(students, func(s student) int {
+		return s.age
+	})
+	fmt.Println(totalAge)
+	// Output: 45
+}
+
+func ExampleSumByP() {
+	type student struct {
+		name string
+		age  int
+	}
+	students := []student{{`Jack`, 10}, {`Mike`, 20}, {`Rose`, 15}}
+
+	totalAge := SumByP(students, func(s *student) int {
+		return s.age
+	})
+	fmt.Println(totalAge)
+	// Output: 45
+}
+
+func ExampleSumByI() {
+	type student struct {
+		name string
+		age  int
+	}
+	students := []student{{`Jack`, 10}, {`Mike`, 20}, {`Rose`, 15}}
+
+	totalAge := SumByI(students, func(i int) int {
+		return students[i].age
+	})
+	fmt.Println(totalAge)
+	// Output: 45
+}
