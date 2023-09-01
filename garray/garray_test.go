@@ -103,6 +103,11 @@ func ExampleCountIf() {
 	// output: 2
 }
 
+func ExampleRepeat() {
+	fmt.Println(Repeat(1, 6))
+	// output: [1 1 1 1 1 1]
+}
+
 func ExampleReverse() {
 	l := []int{1, 2, 3, 4}
 	Reverse(l)

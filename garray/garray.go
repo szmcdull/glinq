@@ -385,6 +385,14 @@ func CountIf[T comparable](s slice[T], pred func(v T) bool) int {
 	return count
 }
 
+func Repeat[T any](v T, n int) []T {
+	result := make([]T, n)
+	for i := range result {
+		result[i] = v
+	}
+	return result
+}
+
 func Reverse[S ~[]T, T any](s S) {
 	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
 		s[i], s[j] = s[j], s[i]
