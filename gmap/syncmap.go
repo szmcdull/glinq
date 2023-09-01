@@ -10,11 +10,6 @@ type (
 		m map[K]V
 		l sync.RWMutex
 	}
-
-	Pair[K comparable, V any] struct {
-		Key   K
-		Value V
-	}
 )
 
 func NewSyncMap[K comparable, V any]() *SyncMap[K, V] {

@@ -5,6 +5,17 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
+type (
+	Pair[K comparable, V any] struct {
+		Key   K
+		Value V
+	}
+)
+
+func NewPair[K comparable, V any](k K, v V) Pair[K, V] {
+	return Pair[K, V]{k, v}
+}
+
 // ToSlice iterate through a map and generate a slice of Pair[K,V]
 func ToSlice[K comparable, V any](m map[K]V) []Pair[K, V] {
 	result := make([]Pair[K, V], 0, len(m))

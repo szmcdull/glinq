@@ -30,3 +30,17 @@ func ExampleSortedKeys() {
 
 	// Output: [1 5 9]
 }
+
+func TestKeyValueOrder(t *testing.T) {
+	m := map[int]string{}
+	m[1] = "John"
+	m[5] = "Marry"
+	m[9] = "Rose"
+	keys := Keys(m)
+	values := Values(m)
+	for i := range keys {
+		if m[keys[i]] != values[i] {
+			t.Fail()
+		}
+	}
+}
