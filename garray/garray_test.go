@@ -223,3 +223,16 @@ func ExampleSumByI() {
 	fmt.Println(totalAge)
 	// Output: 45
 }
+
+func ExamplePaginate() {
+	l := []int{1, 2, 3, 4, 5, 6, 7, 8}
+	i := 0
+	for p := Paginate(l, 3, i); len(p) > 0; {
+		fmt.Println(p)
+		i++
+		p = Paginate(l, 3, i)
+	}
+	// Output: [1 2 3]
+	// [4 5 6]
+	// [7 8]
+}

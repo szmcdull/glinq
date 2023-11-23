@@ -425,3 +425,22 @@ func PushHead[S ~[]T, T any](s S, v T) S {
 func PopHead[S ~[]T, T any](s S) (S, T) {
 	return s[1:], s[1]
 }
+
+func Paginate[S ~[]T, T any](s S, pageSize int, page int) S {
+	if page < 0 {
+		panic(`page must be >= 0`)
+	}
+	if pageSize <= 0 {
+		panic(`pageSize must be > 0`)
+	}
+	l := len(s)
+	start := page * pageSize
+	if start >= l {
+		return nil
+	}
+	end := start + pageSize
+	if end > l {
+		end = l
+	}
+	return s[start:end]
+}
