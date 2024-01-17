@@ -202,6 +202,12 @@ func TestSkip(t *testing.T) {
 	}
 }
 
+func TestSkip2(t *testing.T) {
+	q := []int{0, 1}
+	s := FromSlice(q)
+	fmt.Println(ToSlice(Skip(s, 0)))
+}
+
 func TestTake(t *testing.T) {
 	q := Range(0, 10)
 	q = Take(q, 3)

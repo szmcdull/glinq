@@ -70,13 +70,8 @@ func FromMap[K comparable, V any](v map[K]V) IEnumerable[Pair[K, V]] {
 	}
 }
 
-func (me Slice[T]) GetAt(i int) (v T, err error) {
-	if i < len(me) {
-		v = me[i]
-	} else {
-		err = io.ErrUnexpectedEOF
-	}
-	return
+func (me Slice[T]) GetAt(i int) (v T) {
+	return me[i]
 }
 
 func (me Slice[T]) GetEnumerator() IEnumerator[T] {
@@ -87,7 +82,11 @@ func (me *SliceEnumerator[T]) Current() T {
 	return me.s[me.pos]
 }
 
-func (me *SliceEnumerator[T]) GetAt(pos int) (v T, err error) {
+func (me *SliceEnumerator[T]) Count() int {
+	return len(me.s)
+}
+
+func (me *SliceEnumerator[T]) GetAt(pos int) (v T) {
 	return me.s.GetAt(pos)
 }
 
