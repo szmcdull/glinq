@@ -40,7 +40,7 @@ func TestKeyValueOrder(t *testing.T) {
 	values := Values(m)
 	for i := range keys {
 		if m[keys[i]] != values[i] {
-			t.Fail()
+			t.Errorf(`i=%d m[%d] = %s expected %s`, i, keys[i], m[keys[i]], values[i])
 		}
 	}
 }

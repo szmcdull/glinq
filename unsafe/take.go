@@ -44,6 +44,9 @@ func (me *TakeIterator[T]) MoveNext() bool {
 		fallthrough
 	case 2:
 		ok := me.enumerator.MoveNext()
+		if !ok {
+			return false
+		}
 		me.current = me.enumerator.Current()
 		return ok
 	}
