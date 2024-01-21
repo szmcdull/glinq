@@ -225,6 +225,23 @@ func TestSkip3(t *testing.T) {
 	}
 }
 
+func TestSkip4(t *testing.T) {
+	m1 := []int{}
+	n1 := Take(Skip(FromSlice(m1), 0), 10)
+	result := ToSlice(n1)
+	if len(result) != 0 {
+		t.Fail()
+	}
+}
+
+func TestSkip5(t *testing.T) {
+	m1 := []int{}
+	m2 := Skip(FromSlice(m1), 0)
+	if len(ToSlice(m2)) != 0 {
+		t.Fail()
+	}
+}
+
 func TestTake(t *testing.T) {
 	q := Range(0, 10)
 	q = Take(q, 3)

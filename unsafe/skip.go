@@ -33,11 +33,14 @@ func (me *SkipIterator[T]) MoveNext() bool {
 	case 1:
 		enumerator := me.source.GetEnumerator()
 		me.enumerator = enumerator
-		if randomAcceesor, ok := enumerator.(IRangeEnumerator[T]); ok {
-			err := randomAcceesor.SeekOnce(me.skip)
+		if randomAccessor, ok := enumerator.(IRangeEnumerator[T]); ok {
+			err := randomAccessor.SeekOnce(me.skip)
+			if err != nil {
+				return false
+			}
 			me.current = enumerator.Current()
 			me.state = 2
-			return err == nil
+			return true
 		}
 		for i := 0; i < me.skip; i++ {
 			if ok := enumerator.MoveNext(); !ok {
