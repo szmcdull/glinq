@@ -90,7 +90,7 @@ func (me *SyncMap[K, V]) LoadOrNewE(key K, newFunc func() (V, error)) (actual V,
 	actual, loaded = me.m[key]
 	if !loaded {
 		actual, err = newFunc()
-		if err != nil {
+		if err == nil {
 			me.m[key] = actual
 		}
 	}

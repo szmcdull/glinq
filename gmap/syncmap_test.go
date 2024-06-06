@@ -84,6 +84,13 @@ func TestLoadAnd(t *testing.T) {
 	if v, ok := m.LoadOrNew(1, func() int { return 3 }); v != 3 || ok {
 		t.Fail()
 	}
+
+	if v, ok, err := m.LoadOrNewE(11, func() (int, error) { return 3, nil }); v != 3 || ok || err != nil {
+		t.Fail()
+	}
+	if v, ok := m.Load(11); v != 3 || !ok {
+		t.Fail()
+	}
 }
 
 func _Write(ch <-chan struct{}, m *SyncMap[int, int]) {
