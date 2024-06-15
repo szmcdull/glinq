@@ -40,6 +40,16 @@ func (me *SyncMap[K, V]) DeleteIf(pred func(k K, v V) bool) {
 	}
 }
 
+func (me *SyncMap[K, V]) UpdateIf(pred func(k K, v V) (V, bool)) {
+	me.l.Lock()
+	defer me.l.Unlock()
+	for k, v := range me.m {
+		if newV, updated := pred(k, v); updated {
+			me.m[k] = newV
+		}
+	}
+}
+
 func (me *SyncMap[K, V]) Store(key K, value V) {
 	me.l.Lock()
 	defer me.l.Unlock()
