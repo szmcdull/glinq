@@ -53,3 +53,29 @@ func ExampleMinBy() {
 	fmt.Println(minEven)
 	// Output: 0
 }
+func ExampleMaxIndex() {
+	// Finding the index of the maximum element in a slice of integers
+	maxIndex := MaxIndex([]int{10, -20, 5, 15, 30, -25}, func(i int) int {
+		return []int{10, -20, 5, 15, 30, -25}[i]
+	})
+	fmt.Println(maxIndex)
+	// Output: 4
+}
+
+func ExampleMaxIndex_emtpy() {
+	// Trying to find the index of the maximum element in an empty slice should return -1
+	maxIndex := MaxIndex([]int{}, func(i int) int {
+		return []int{}[i]
+	})
+	fmt.Println(maxIndex)
+	// Output: -1
+}
+
+func ExampleMinIndex() {
+	// Finding the index of the maximum element in a slice of integers
+	maxIndex := MinIndex([]int{10, -20, 5, 15, 30, -25}, func(i int) int {
+		return []int{10, -20, 5, 15, 30, -25}[i]
+	})
+	fmt.Println(maxIndex)
+	// Output: 5
+}

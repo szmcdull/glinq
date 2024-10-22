@@ -65,3 +65,43 @@ func MinBy[S ~[]T, T any, N Number](s S, selector func(T) N) N {
 
 	return min
 }
+
+func MaxIndex[S ~[]T, T any, N Number](s S, selector func(int) N) (result int) {
+	result = -1
+	length := len(s)
+	if length == 0 {
+		return
+	}
+
+	result = 0
+	min := selector(0)
+	for i := 1; i < length; i++ {
+		current := selector(i)
+		if current > min {
+			min = current
+			result = i
+		}
+	}
+
+	return
+}
+
+func MinIndex[S ~[]T, T any, N Number](s S, selector func(int) N) (result int) {
+	result = -1
+	length := len(s)
+	if length == 0 {
+		return
+	}
+
+	result = 0
+	min := selector(0)
+	for i := 1; i < length; i++ {
+		current := selector(i)
+		if current < min {
+			min = current
+			result = i
+		}
+	}
+
+	return
+}
