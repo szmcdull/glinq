@@ -27,6 +27,13 @@ type (
 		slice[T]
 		less func(T, T) bool
 	}
+	sortableByIndex[T any, V constraints.Ordered] struct {
+		slice[T]
+		selector func(i int) V
+	}
+	sortableByIndexDescending[T any, V constraints.Ordered] struct {
+		sortableByIndex[T, V]
+	}
 )
 
 func Sortable[T constraints.Ordered](l []T) sortable[T] {
@@ -61,6 +68,14 @@ func SortByDescending[T any, V constraints.Ordered](l []T, selector func(T) V) {
 	sort.Sort(OrderByDescending(l, selector))
 }
 
+func SortByIndex[T any, V constraints.Ordered](l []T, selector func(i int) V) {
+	sort.Sort(sortableByIndex[T, V]{slice[T](l), selector})
+}
+
+func SortByIndexDescending[T any, V constraints.Ordered](l []T, selector func(i int) V) {
+	sort.Sort(sortableByIndexDescending[T, V]{sortableByIndex[T, V]{slice[T](l), selector}})
+}
+
 func SortByComparer[T any](l []T, less func(T, T) bool) {
 	sort.Sort(sortableByComparer[T]{slice[T](l), less})
 }
@@ -91,4 +106,12 @@ func (s sortableByDescending[T, V]) Less(i, j int) bool {
 
 func (s sortableByComparer[T]) Less(i, j int) bool {
 	return s.less(s.slice[i], s.slice[j])
+}
+
+func (s sortableByIndex[T, V]) Less(i, j int) bool {
+	return s.selector(i) < s.selector(j)
+}
+
+func (s sortableByIndexDescending[T, V]) Less(i, j int) bool {
+	return s.selector(i) > s.selector(j)
 }

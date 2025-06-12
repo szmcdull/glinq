@@ -149,3 +149,17 @@ func ExampleSortByDescending() {
 	// Keyboard 49.99
 	// Mouse 19.99
 }
+
+func ExampleSortByIndex() {
+	l := []string{"apple", "banana", "mandarin", "date", "elderberry"}
+	SortByIndex(l, func(i int) int { return len(l[i]) })
+	fmt.Println(l)
+	// Output: [date apple banana mandarin elderberry]
+}
+
+func ExampleSortByIndexDescending() {
+	l := []string{"apple", "banana", "mandarin", "date", "elderberry"}
+	SortByIndexDescending(l, func(i int) int { return i })
+	fmt.Println(l)
+	// Output: [elderberry date mandarin banana apple]
+}
