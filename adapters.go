@@ -56,7 +56,7 @@ func FromSlice[T any](v []T) IEnumerable[T] {
 	return Slice[T](v)
 }
 
-// 先复制出一个 []Pair[K,V]，再转成 IEnumerable，不适用于map很大的情况
+// First copy to a []Pair[K,V], then convert to IEnumerable. Not suitable for large maps.
 func FromMapCopy[K comparable, V any](v map[K]V) IEnumerable[Pair[K, V]] {
 	values := make([]Pair[K, V], 0, len(v))
 	for kk, vv := range v {
@@ -65,7 +65,7 @@ func FromMapCopy[K comparable, V any](v map[K]V) IEnumerable[Pair[K, V]] {
 	return FromSlice(values)
 }
 
-// 通过 reflect.MapRange 遍历 map，线性读取快，随机访问慢
+// Traverse map using reflect.MapRange, fast for linear reading, slow for random access
 func FromMapReflect[K comparable, V any](v map[K]V) IEnumerable[Pair[K, V]] {
 	return Map[K, V](v)
 }
